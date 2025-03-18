@@ -1,9 +1,12 @@
 package com.carango.bom.model;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.Check;
+
 
 @Entity
 @Table(name = "marcas")
+@Check(constraints = "LENGTH(nome) > 3")
 public class MarcaVeiculo {
 
     @Id

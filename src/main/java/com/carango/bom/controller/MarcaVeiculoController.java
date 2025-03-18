@@ -3,6 +3,9 @@ package com.carango.bom.controller;
 import com.carango.bom.model.MarcaVeiculo;
 import com.carango.bom.service.MarcaVeiculoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,8 +19,8 @@ public class MarcaVeiculoController {
     private MarcaVeiculoService service;
 
     @GetMapping
-    public List<MarcaVeiculo> listarTodas() {
-        return service.listarTodas();
+    public Page<MarcaVeiculo> listarTodas(@PageableDefault(size = 10)  Pageable paginacao) {
+        return service.listarTodas(paginacao);
     }
 
     @GetMapping("/{id}")
