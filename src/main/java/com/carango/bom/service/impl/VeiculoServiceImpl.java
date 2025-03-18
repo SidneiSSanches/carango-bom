@@ -5,6 +5,7 @@ import com.carango.bom.repository.veiculo.VeiculoRepository;
 import com.carango.bom.repository.veiculo.entity.VeiculoEntity;
 import com.carango.bom.service.MarcaVeiculoService;
 import com.carango.bom.service.VeiculoService;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,11 +18,13 @@ public class VeiculoServiceImpl implements VeiculoService {
   private VeiculoRepository veiculoRepository;
   private MarcaVeiculoService marcaVeiculoService;
 
+  @Transactional
   @Override
   public List<VeiculoEntity> listarVeiculos() {
     return veiculoRepository.findAll();
   }
 
+  @Transactional
   @Override
   public List<VeiculoEntity> listarPorMarca(Long marcaId) {
     var marcaEntity = marcaVeiculoService.buscarPorId(marcaId).orElseThrow();
@@ -29,11 +32,13 @@ public class VeiculoServiceImpl implements VeiculoService {
     return veiculoRepository.findByMarcaVeiculo(marcaEntity);
   }
 
+  @Transactional
   @Override
   public List<VeiculoEntity> listarPorFaixaValor(BigDecimal valorMinimo, BigDecimal valorMaximo) {
     return veiculoRepository.findAllByValorBetween(valorMinimo, valorMaximo);
   }
 
+  @Transactional
   @Override
   public void criarVeiculo(NovoVeiculoDto novoVeiculoDto) {
     var marcaVeiculoEntity = marcaVeiculoService.buscarPorId(novoVeiculoDto.idMarca())
@@ -49,6 +54,7 @@ public class VeiculoServiceImpl implements VeiculoService {
     veiculoRepository.save(veiculoEntity);
   }
 
+  @Transactional
   @Override
   public void atualizarVeiculo(Long id, NovoVeiculoDto novoVeiculoDto) {
     var veiculoEntity = veiculoRepository.findById(id).orElseThrow();
@@ -62,6 +68,7 @@ public class VeiculoServiceImpl implements VeiculoService {
     veiculoRepository.save(veiculoEntity);
   }
 
+  @Transactional
   @Override
   public void removerVeiculo(Long id) {
     var veiculoEntity = veiculoRepository.findById(id).orElseThrow();

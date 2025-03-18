@@ -52,14 +52,14 @@ public class VeiculoController {
     veiculoService.atualizarVeiculo(veiculoId, novoVeiculoDto);
 
     return ResponseEntity.ok()
-            .body("Veículo de id: " + veiculoId + " , atualizado com sucesso!");
+            .body(novoVeiculoDto);
   }
 
   @DeleteMapping("/{veiculo_id}")
   public ResponseEntity<Object> removerVeiculo(@PathVariable(name = "veiculo_id") Long veiculoId) {
     veiculoService.removerVeiculo(veiculoId);
 
-    return ResponseEntity.ok()
-            .body("Veículo de id: " + veiculoId + " , removido com sucesso!");
+    return ResponseEntity.noContent()
+            .build();
   }
 }
