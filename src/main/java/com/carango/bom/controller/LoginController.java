@@ -2,6 +2,7 @@ package com.carango.bom.controller;
 
 import com.carango.bom.request.CustomerRequest;
 import com.carango.bom.service.LoginService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,8 +13,7 @@ public class LoginController {
     LoginService loginService;
 
     @PostMapping("/login")
-    public String login(
-            @RequestBody CustomerRequest request){
+    public String login(@Valid @RequestBody CustomerRequest request){
         return loginService.validaLogin(request);
     }
 }
