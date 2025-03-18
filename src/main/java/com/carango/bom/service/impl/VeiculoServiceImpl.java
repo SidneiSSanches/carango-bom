@@ -27,7 +27,7 @@ public class VeiculoServiceImpl implements VeiculoService {
   @Transactional
   @Override
   public List<VeiculoEntity> listarPorMarca(Long marcaId) {
-    var marcaEntity = marcaVeiculoService.buscarPorId(marcaId).orElseThrow();
+    var marcaEntity = marcaVeiculoService.buscarPorId(marcaId);
 
     return veiculoRepository.findByMarcaVeiculo(marcaEntity);
   }
@@ -41,8 +41,7 @@ public class VeiculoServiceImpl implements VeiculoService {
   @Transactional
   @Override
   public void criarVeiculo(NovoVeiculoDto novoVeiculoDto) {
-    var marcaVeiculoEntity = marcaVeiculoService.buscarPorId(novoVeiculoDto.idMarca())
-            .orElseThrow();
+    var marcaVeiculoEntity = marcaVeiculoService.buscarPorId(novoVeiculoDto.idMarca());
 
     var veiculoEntity = VeiculoEntity.builder()
             .marcaVeiculo(marcaVeiculoEntity)
@@ -58,7 +57,7 @@ public class VeiculoServiceImpl implements VeiculoService {
   @Override
   public void atualizarVeiculo(Long id, NovoVeiculoDto novoVeiculoDto) {
     var veiculoEntity = veiculoRepository.findById(id).orElseThrow();
-    var marcaEntity = marcaVeiculoService.buscarPorId(novoVeiculoDto.idMarca()).orElseThrow();
+    var marcaEntity = marcaVeiculoService.buscarPorId(novoVeiculoDto.idMarca());
 
     veiculoEntity.setMarcaVeiculo(marcaEntity);
     veiculoEntity.setModelo(novoVeiculoDto.modelo());
