@@ -1,21 +1,20 @@
 package com.carango.bom.controller;
 
+import com.carango.bom.dto.MarcaDto;
 import com.carango.bom.repository.marca.entity.MarcaEntity;
 import com.carango.bom.service.impl.MarcaServiceImpl;
-
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import lombok.AllArgsConstructor;
-
 @AllArgsConstructor
 @RestController
 @RequestMapping("/marcas")
-public class MarcaVeiculoController {
+public class MarcaController {
     private MarcaServiceImpl service;
 
     @GetMapping
@@ -24,18 +23,28 @@ public class MarcaVeiculoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MarcaEntity> buscarPorId(@PathVariable Long id) {
-        MarcaEntity marca = service.buscarPorId(id);
-        return ResponseEntity.ok(marca);
+    public ResponseEntity<MarcaDto> buscarPorId(@PathVariable Long id) {
+        MarcaEntity marcaEntity = service.buscarPorId(id);
+        return ResponseEntity.ok(new MarcaDto(marcaEntity.getNome()));
     }
 
     @PostMapping
-    public MarcaEntity salvar(@Valid @RequestBody MarcaEntity marca) {
-        return service.salvar(marca);
+    public void criarMarca(@Valid @RequestBody MarcaDto marca) {
+        service.criarMarca(marca);
     }
 
     @DeleteMapping("/{id}")
     public void excluir(@PathVariable Long id) {
         service.excluir(id);
+    }
+
+    @PutMapping("/{marca_id}")
+    public ResponseEntity<MarcaDto> atualizarMarca(
+            @PathVariable(name = "marca_id") Long marcaId,
+            @RequestBody MarcaDto marca) {
+        service.atualizarMarca(marcaId, marca);
+
+        return ResponseEntity.ok()
+                .body(marca);
     }
 }

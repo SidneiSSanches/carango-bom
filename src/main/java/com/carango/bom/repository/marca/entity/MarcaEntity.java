@@ -5,9 +5,15 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 import com.carango.bom.repository.veiculo.entity.VeiculoEntity;
+import lombok.*;
 
 import java.util.List;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Getter
+@Setter
 @Entity
 @Table(name = "marcas")
 public class MarcaEntity {
@@ -23,21 +29,4 @@ public class MarcaEntity {
     @OneToMany(mappedBy = "marca", cascade = CascadeType.ALL)
     private List<VeiculoEntity> veiculoEntity;
 
-    public MarcaEntity() {}
-
-    public MarcaEntity(String nome) {
-        this.nome = nome;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
 }
