@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.net.URI;
 import java.util.List;
 
@@ -20,6 +21,20 @@ public class VeiculoController {
   public ResponseEntity<List<VeiculoEntity>> listarVeiculos() {
     return ResponseEntity.ok()
             .body(veiculoService.listarVeiculos());
+  }
+
+  @GetMapping("/marcas/{marca_id}")
+  public ResponseEntity<List<VeiculoEntity>> listarPorMarca(@PathVariable(name = "marca_id") Long marcaId) {
+    return ResponseEntity.ok()
+            .body(veiculoService.listarPorMarca(marcaId));
+  }
+
+  @GetMapping("/faixas")
+  public ResponseEntity<List<VeiculoEntity>> listarPorFaixa(
+          @RequestParam(name = "valor_minimo") BigDecimal valorMinimo,
+          @RequestParam(name = "valor_maximo") BigDecimal valorMaximo) {
+    return ResponseEntity.ok()
+            .body(veiculoService.listarPorFaixaValor(valorMinimo, valorMaximo));
   }
 
   @PostMapping

@@ -8,6 +8,7 @@ import com.carango.bom.service.VeiculoService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @AllArgsConstructor
@@ -19,6 +20,18 @@ public class VeiculoServiceImpl implements VeiculoService {
   @Override
   public List<VeiculoEntity> listarVeiculos() {
     return veiculoRepository.findAll();
+  }
+
+  @Override
+  public List<VeiculoEntity> listarPorMarca(Long marcaId) {
+    var marcaEntity = marcaVeiculoService.buscarPorId(marcaId).orElseThrow();
+
+    return veiculoRepository.findByMarcaVeiculo(marcaEntity);
+  }
+
+  @Override
+  public List<VeiculoEntity> listarPorFaixaValor(BigDecimal valorMinimo, BigDecimal valorMaximo) {
+    return veiculoRepository.findAllByValorBetween(valorMinimo, valorMaximo);
   }
 
   @Override
