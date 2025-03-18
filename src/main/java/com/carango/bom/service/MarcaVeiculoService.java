@@ -2,11 +2,12 @@ package com.carango.bom.service;
 
 import com.carango.bom.model.MarcaVeiculo;
 import com.carango.bom.repository.MarcaVeiculoRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import java.util.List;
+
 import java.util.Optional;
 
 @Service
@@ -19,8 +20,8 @@ public class MarcaVeiculoService {
         return repository.findAll(paginacao);
     }
 
-    public Optional<MarcaVeiculo> buscarPorId(Long id) {
-        return repository.findById(id);
+    public MarcaVeiculo buscarPorId(Long id) {
+        return repository.findById(id).orElseThrow(() -> new EntityNotFoundException("MarcaVeiculo com ID " + id + " não foi encontrada."));
     }
 
     public MarcaVeiculo salvar(MarcaVeiculo marca) {
