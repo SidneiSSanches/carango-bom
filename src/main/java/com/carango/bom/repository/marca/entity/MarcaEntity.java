@@ -1,18 +1,16 @@
-package com.carango.bom.model;
+package com.carango.bom.repository.marca.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import org.hibernate.annotations.Check;
 
 import com.carango.bom.repository.veiculo.entity.VeiculoEntity;
-import jakarta.persistence.*;
 
 import java.util.List;
 
 @Entity
 @Table(name = "marcas")
-public class MarcaVeiculo {
+public class MarcaEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,12 +20,12 @@ public class MarcaVeiculo {
     @Size(min = 3, max = 255, message = "O nome deve ter no mínimo 3 caracteres")
     private String nome;
 
-    @OneToMany(mappedBy = "marcaVeiculo", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "marca", cascade = CascadeType.ALL)
     private List<VeiculoEntity> veiculoEntity;
 
-    public MarcaVeiculo() {}
+    public MarcaEntity() {}
 
-    public MarcaVeiculo(String nome) {
+    public MarcaEntity(String nome) {
         this.nome = nome;
     }
 

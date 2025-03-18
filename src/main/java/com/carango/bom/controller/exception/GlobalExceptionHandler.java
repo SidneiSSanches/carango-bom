@@ -1,4 +1,4 @@
-package com.carango.bom.exception;
+package com.carango.bom.controller.exception;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;

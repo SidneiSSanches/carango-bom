@@ -1,7 +1,7 @@
 package com.carango.bom.controller;
 
-import com.carango.bom.model.MarcaVeiculo;
-import com.carango.bom.service.MarcaVeiculoService;
+import com.carango.bom.repository.marca.entity.MarcaEntity;
+import com.carango.bom.service.impl.MarcaServiceImpl;
 
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -16,21 +16,21 @@ import lombok.AllArgsConstructor;
 @RestController
 @RequestMapping("/marcas")
 public class MarcaVeiculoController {
-    private MarcaVeiculoService service;
+    private MarcaServiceImpl service;
 
     @GetMapping
-    public Page<MarcaVeiculo> listarTodas(@PageableDefault(size = 10)  Pageable paginacao) {
+    public Page<MarcaEntity> listarTodas(@PageableDefault(size = 10)  Pageable paginacao) {
         return service.listarTodas(paginacao);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MarcaVeiculo> buscarPorId(@PathVariable Long id) {
-        MarcaVeiculo marca = service.buscarPorId(id);
+    public ResponseEntity<MarcaEntity> buscarPorId(@PathVariable Long id) {
+        MarcaEntity marca = service.buscarPorId(id);
         return ResponseEntity.ok(marca);
     }
 
     @PostMapping
-    public MarcaVeiculo salvar(@Valid @RequestBody MarcaVeiculo marca) {
+    public MarcaEntity salvar(@Valid @RequestBody MarcaEntity marca) {
         return service.salvar(marca);
     }
 

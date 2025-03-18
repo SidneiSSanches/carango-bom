@@ -1,4 +1,4 @@
-package com.carango.bom.request;
+package com.carango.bom.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

@@ -1,6 +1,6 @@
 package com.carango.bom.repository.veiculo.entity;
 
-import com.carango.bom.model.MarcaVeiculo;
+import com.carango.bom.repository.marca.entity.MarcaEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,7 +19,7 @@ public class VeiculoEntity {
   private Long id;
   @ManyToOne
   @JoinColumn(name="marca_id")
-  private MarcaVeiculo marcaVeiculo;
+  private MarcaEntity marca;
   @Column(nullable = false)
   private String modelo;
   @Column(nullable = false)

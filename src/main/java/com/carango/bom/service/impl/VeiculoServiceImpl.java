@@ -3,7 +3,6 @@ package com.carango.bom.service.impl;
 import com.carango.bom.dto.NovoVeiculoDto;
 import com.carango.bom.repository.veiculo.VeiculoRepository;
 import com.carango.bom.repository.veiculo.entity.VeiculoEntity;
-import com.carango.bom.service.MarcaVeiculoService;
 import com.carango.bom.service.VeiculoService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -16,7 +15,7 @@ import java.util.List;
 @Service
 public class VeiculoServiceImpl implements VeiculoService {
   private VeiculoRepository veiculoRepository;
-  private MarcaVeiculoService marcaVeiculoService;
+  private MarcaServiceImpl marcaServiceImpl;
 
   @Transactional
   @Override
@@ -27,9 +26,9 @@ public class VeiculoServiceImpl implements VeiculoService {
   @Transactional
   @Override
   public List<VeiculoEntity> listarPorMarca(Long marcaId) {
-    var marcaEntity = marcaVeiculoService.buscarPorId(marcaId);
+    var marcaEntity = marcaServiceImpl.buscarPorId(marcaId);
 
-    return veiculoRepository.findByMarcaVeiculo(marcaEntity);
+    return veiculoRepository.findByMarca(marcaEntity);
   }
 
   @Transactional
@@ -41,10 +40,10 @@ public class VeiculoServiceImpl implements VeiculoService {
   @Transactional
   @Override
   public void criarVeiculo(NovoVeiculoDto novoVeiculoDto) {
-    var marcaVeiculoEntity = marcaVeiculoService.buscarPorId(novoVeiculoDto.idMarca());
+    var marcaVeiculoEntity = marcaServiceImpl.buscarPorId(novoVeiculoDto.idMarca());
 
     var veiculoEntity = VeiculoEntity.builder()
-            .marcaVeiculo(marcaVeiculoEntity)
+            .marca(marcaVeiculoEntity)
             .modelo(novoVeiculoDto.modelo())
             .ano(novoVeiculoDto.ano())
             .valor(novoVeiculoDto.valor())
@@ -57,9 +56,9 @@ public class VeiculoServiceImpl implements VeiculoService {
   @Override
   public void atualizarVeiculo(Long id, NovoVeiculoDto novoVeiculoDto) {
     var veiculoEntity = veiculoRepository.findById(id).orElseThrow();
-    var marcaEntity = marcaVeiculoService.buscarPorId(novoVeiculoDto.idMarca());
+    var marcaEntity = marcaServiceImpl.buscarPorId(novoVeiculoDto.idMarca());
 
-    veiculoEntity.setMarcaVeiculo(marcaEntity);
+    veiculoEntity.setMarca(marcaEntity);
     veiculoEntity.setModelo(novoVeiculoDto.modelo());
     veiculoEntity.setAno(novoVeiculoDto.ano());
     veiculoEntity.setValor(novoVeiculoDto.valor());
