@@ -3,6 +3,8 @@ package com.carango.bom.model;
 import com.carango.bom.repository.veiculo.entity.VeiculoEntity;
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "marcas")
 public class MarcaVeiculo {
@@ -13,8 +15,8 @@ public class MarcaVeiculo {
     @Column(nullable = false, unique = true)
     private String nome;
 
-    @OneToOne(mappedBy = "marcaVeiculo", cascade = CascadeType.ALL)
-    private VeiculoEntity veiculoEntity;
+    @OneToMany(mappedBy = "marcaVeiculo", cascade = CascadeType.ALL)
+    private List<VeiculoEntity> veiculoEntity;
 
     public MarcaVeiculo() {}
 

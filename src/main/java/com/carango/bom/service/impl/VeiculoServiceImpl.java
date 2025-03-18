@@ -17,6 +17,11 @@ public class VeiculoServiceImpl implements VeiculoService {
   private MarcaVeiculoService marcaVeiculoService;
 
   @Override
+  public List<VeiculoEntity> listarVeiculos() {
+    return veiculoRepository.findAll();
+  }
+
+  @Override
   public void criarVeiculo(NovoVeiculoDto novoVeiculoDto) {
     var marcaVeiculoEntity = marcaVeiculoService.buscarPorId(novoVeiculoDto.idMarca())
             .orElseThrow();
@@ -32,7 +37,22 @@ public class VeiculoServiceImpl implements VeiculoService {
   }
 
   @Override
-  public List<VeiculoEntity> listarVeiculos() {
-    return veiculoRepository.findAll();
+  public void atualizarVeiculo(Long id, NovoVeiculoDto novoVeiculoDto) {
+    var veiculoEntity = veiculoRepository.findById(id).orElseThrow();
+    var marcaEntity = marcaVeiculoService.buscarPorId(novoVeiculoDto.idMarca()).orElseThrow();
+
+    veiculoEntity.setMarcaVeiculo(marcaEntity);
+    veiculoEntity.setModelo(novoVeiculoDto.modelo());
+    veiculoEntity.setAno(novoVeiculoDto.ano());
+    veiculoEntity.setValor(novoVeiculoDto.valor());
+
+    veiculoRepository.save(veiculoEntity);
+  }
+
+  @Override
+  public void removerVeiculo(Long id) {
+    var veiculoEntity = veiculoRepository.findById(id).orElseThrow();
+
+    veiculoRepository.delete(veiculoEntity);
   }
 }

@@ -6,6 +6,8 @@ import com.carango.bom.repository.veiculo.entity.VeiculoEntity;
 import java.util.List;
 
 public interface VeiculoService {
-  void criarVeiculo(NovoVeiculoDto novoVeiculoDto);
   List<VeiculoEntity> listarVeiculos();
+  void criarVeiculo(NovoVeiculoDto novoVeiculoDto);
+  void atualizarVeiculo(Long id, NovoVeiculoDto novoVeiculoDto);
+  void removerVeiculo(Long id);
 }
