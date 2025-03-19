@@ -21,7 +21,7 @@ public class SpringDocConfigurations {
         		.info(new Info()
                 .title("Caranga-BOM API")
                 .version(appVersion)
-                .description("API Rest da aplicacao Caranga-bom. Voce pode saber mais do Swagger em [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/). Para este exemplo voce pode utilizar a api key `login` para testes e autorizacao de filtros.")
+                .description("API Rest da aplicacao Caranga-bom. Voce pode saber mais do Swagger em [http://swagger.io](http://swagger.io) ou em [irc.freenode.net, #swagger](http://swagger.io/irc/). Para este exemplo voce pode utilizar a api Token Login `special-key` para testes e autorizacao de filtros.")
                 .termsOfService("http://swagger.io/terms/")
                 .license(new License().name("Apache 2.0").url("http://springdoc.org")))
                 .components(new Components()
