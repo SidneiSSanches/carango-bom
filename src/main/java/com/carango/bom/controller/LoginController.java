@@ -15,7 +15,7 @@ public class LoginController {
     LoginServiceImpl loginServiceImpl;
 
     @PostMapping("/login")
-    @Operation(summary="Gera Token para acesso",tags="Gera token",description="O token gerado é utilizado para acesso a demais funcionalidades")
+    @Operation(summary="Gera Token para acesso",tags="Token Login",description="O token gerado é utilizado para acesso a demais funcionalidades")
     public String login(@Valid @RequestBody CustomerRequest request){
         return loginServiceImpl.validaLogin(request);
     }

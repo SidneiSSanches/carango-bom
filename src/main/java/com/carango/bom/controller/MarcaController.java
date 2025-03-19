@@ -23,7 +23,7 @@ public class MarcaController {
     private MarcaServiceImpl service;
 
     @GetMapping
-    @Operation(summary="Listagem Marca",tags="Lista",description="Funcionalidade de listagem das marcas cadastradas")
+    @Operation(summary="Listagem Marca",tags="Listagem",description="Funcionalidade de listagem das marcas cadastradas")
     public Page<MarcaEntity> listarTodas(@PageableDefault(size = 10)  Pageable paginacao) {
         return service.listarTodas(paginacao);
     }

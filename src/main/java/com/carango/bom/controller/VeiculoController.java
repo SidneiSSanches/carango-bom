@@ -25,7 +25,7 @@ public class VeiculoController {
   private VeiculoService veiculoService;
 
   @GetMapping
-  @Operation(summary="Lista Veiculos",tags="Lista",description="Funcionalidade de listagem dos veiculos cadastrados")
+  @Operation(summary="Lista Veiculos",tags="Listagem",description="Funcionalidade de listagem dos veiculos cadastrados")
   public Page<VeiculoEntity> listarVeiculos(@PageableDefault(size = 10) Pageable paginacao) {
     return veiculoService.listarVeiculos(paginacao);
   }
@@ -38,7 +38,7 @@ public class VeiculoController {
   }
 
   @GetMapping("/faixas")
-  @Operation(summary="Lista Veiculos por faixa de preço",tags="Lista",description="Funcionalidade de listagem dos veiculos cadastrados por faixa de preço")
+  @Operation(summary="Lista Veiculos por faixa de preço",tags="Listagem",description="Funcionalidade de listagem dos veiculos cadastrados por faixa de preço")
   public ResponseEntity<List<VeiculoEntity>> listarPorFaixa(@Valid
           @RequestParam(name = "valor_minimo") BigDecimal valorMinimo,
           @RequestParam(name = "valor_maximo") BigDecimal valorMaximo) {
