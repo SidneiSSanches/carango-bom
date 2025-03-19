@@ -6,6 +6,8 @@ import com.carango.bom.repository.veiculo.entity.VeiculoEntity;
 import com.carango.bom.service.VeiculoService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -17,13 +19,11 @@ public class VeiculoServiceImpl implements VeiculoService {
   private VeiculoRepository veiculoRepository;
   private MarcaServiceImpl marcaServiceImpl;
 
-  @Transactional
   @Override
-  public List<VeiculoEntity> listarVeiculos() {
-    return veiculoRepository.findAll();
+  public Page<VeiculoEntity> listarVeiculos(Pageable paginacao) {
+    return veiculoRepository.findAll(paginacao);
   }
 
-  @Transactional
   @Override
   public List<VeiculoEntity> listarPorMarca(Long marcaId) {
     var marcaEntity = marcaServiceImpl.buscarPorId(marcaId);
@@ -31,7 +31,6 @@ public class VeiculoServiceImpl implements VeiculoService {
     return veiculoRepository.findByMarca(marcaEntity);
   }
 
-  @Transactional
   @Override
   public List<VeiculoEntity> listarPorFaixaValor(BigDecimal valorMinimo, BigDecimal valorMaximo) {
     return veiculoRepository.findAllByValorBetween(valorMinimo, valorMaximo);

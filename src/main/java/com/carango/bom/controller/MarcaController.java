@@ -11,6 +11,8 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
+
 @AllArgsConstructor
 @RestController
 @RequestMapping("/marcas")
@@ -29,8 +31,10 @@ public class MarcaController {
     }
 
     @PostMapping
-    public void criarMarca(@Valid @RequestBody MarcaDto marca) {
+    public ResponseEntity<Object> criarMarca(@Valid @RequestBody MarcaDto marca) {
         service.criarMarca(marca);
+        return ResponseEntity.created(URI.create("/marcas"))
+                .build();
     }
 
     @DeleteMapping("/{id}")
