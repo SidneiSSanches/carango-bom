@@ -4,6 +4,8 @@ import com.carango.bom.dto.NovoVeiculoDto;
 import com.carango.bom.repository.marca.entity.MarcaEntity;
 import com.carango.bom.repository.veiculo.entity.VeiculoEntity;
 import com.carango.bom.service.VeiculoService;
+
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -23,17 +25,20 @@ public class VeiculoController {
   private VeiculoService veiculoService;
 
   @GetMapping
+  @Operation(summary="Lista Veiculos",tags="Lista",description="Funcionalidade de listagem dos veiculos cadastrados")
   public Page<VeiculoEntity> listarVeiculos(@PageableDefault(size = 10) Pageable paginacao) {
     return veiculoService.listarVeiculos(paginacao);
   }
 
   @GetMapping("/marcas/{marca_id}")
+  @Operation(summary="Busca Veiculos por Marca",tags="Busca",description="Funcionalidade de listagem dos veiculos cadastrados por marca")
   public ResponseEntity<List<VeiculoEntity>> listarPorMarca(@PathVariable(name = "marca_id") Long marcaId) {
     return ResponseEntity.ok()
             .body(veiculoService.listarPorMarca(marcaId));
   }
 
   @GetMapping("/faixas")
+  @Operation(summary="Lista Veiculos por faixa de preço",tags="Lista",description="Funcionalidade de listagem dos veiculos cadastrados por faixa de preço")
   public ResponseEntity<List<VeiculoEntity>> listarPorFaixa(@Valid
           @RequestParam(name = "valor_minimo") BigDecimal valorMinimo,
           @RequestParam(name = "valor_maximo") BigDecimal valorMaximo) {
@@ -42,6 +47,7 @@ public class VeiculoController {
   }
 
   @PostMapping
+  @Operation(summary="Cadastro Veiculo",tags="Cadastro",description="Funcionalidade de cadastro de um Veiculo")
   public ResponseEntity<Object> criarVeiculo(@Valid @RequestBody NovoVeiculoDto novoVeiculoDto) {
     veiculoService.criarVeiculo(novoVeiculoDto);
 
@@ -50,6 +56,7 @@ public class VeiculoController {
   }
 
   @PutMapping("/{veiculo_id}")
+  @Operation(summary="Atualização Veiculo",tags="Atualização",description="Funcionalidade de Atualização de um Veiculo cadastrado")
   public ResponseEntity<Object> atualizarVeiculo(@Valid
           @PathVariable(name = "veiculo_id") Long veiculoId,
           @RequestBody NovoVeiculoDto novoVeiculoDto) {
@@ -60,6 +67,7 @@ public class VeiculoController {
   }
 
   @DeleteMapping("/{veiculo_id}")
+  @Operation(summary="Exclusão Veiculo",tags="Exclusão",description="Funcionalidade de exclusão de um Veiculo cadastrado")
   public ResponseEntity<Object> removerVeiculo(@Valid @PathVariable(name = "veiculo_id") Long veiculoId) {
     veiculoService.removerVeiculo(veiculoId);
 
