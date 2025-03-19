@@ -1,18 +1,15 @@
 package com.carango.bom.repository.marca.entity;
 
+import com.carango.bom.repository.veiculo.entity.VeiculoEntity;
+import com.fasterxml.jackson.annotation.JsonRootName;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-
-import com.carango.bom.repository.veiculo.entity.VeiculoEntity;
-import com.fasterxml.jackson.annotation.JsonRootName;
-
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import lombok.*;
 
 import java.util.List;
-
 
 @AllArgsConstructor
 @NoArgsConstructor

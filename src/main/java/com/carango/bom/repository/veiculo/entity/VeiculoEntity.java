@@ -2,7 +2,6 @@ package com.carango.bom.repository.veiculo.entity;
 
 import com.carango.bom.repository.marca.entity.MarcaEntity;
 import com.fasterxml.jackson.annotation.JsonRootName;
-
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import jakarta.persistence.*;
