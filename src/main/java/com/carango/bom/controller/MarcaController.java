@@ -39,12 +39,9 @@ public class MarcaController {
     }
 
     @PutMapping("/{marca_id}")
-    public ResponseEntity<MarcaDto> atualizarMarca(
+    public ResponseEntity atualizarMarca(
             @PathVariable(name = "marca_id") Long marcaId,
             @RequestBody MarcaDto marca) {
-        service.atualizarMarca(marcaId, marca);
-
-        return ResponseEntity.ok()
-                .body(marca);
+        return service.atualizarMarca(marcaId, marca);
     }
 }

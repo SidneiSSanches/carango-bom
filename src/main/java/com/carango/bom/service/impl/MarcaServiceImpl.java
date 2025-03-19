@@ -9,7 +9,10 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @AllArgsConstructor
 @Service
@@ -43,10 +46,19 @@ public class MarcaServiceImpl implements MarcaService {
 
     @Transactional
     @Override
-    public void atualizarMarca(Long marcaId, MarcaDto marca) {
-        var marcaEntity = MarcaEntity.builder()
-                .nome(marca.nome())
-                .build();
-        repository.save(marcaEntity);
+    public ResponseEntity atualizarMarca(Long id, MarcaDto marca) {
+        var marcaEntity = repository.findById(id);
+
+        if (marcaEntity.isPresent()) {
+            var marcaEntityAtualizada = MarcaEntity.builder()
+                    .id(id)
+                    .nome(marca.nome())
+                    .build();
+
+            repository.save(marcaEntityAtualizada);
+            return ResponseEntity.ok().body(marca);
+        } else{
+            return ResponseEntity.noContent().build();
+        }
     }
 }
