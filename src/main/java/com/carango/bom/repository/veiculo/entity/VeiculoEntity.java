@@ -26,7 +26,7 @@ public class VeiculoEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Schema(description="Campo id" ,requiredMode = RequiredMode.REQUIRED)
+  @Schema(description="Campo id" ,example= "9999",requiredMode = RequiredMode.REQUIRED)
   private Long id;
 
   @ManyToOne
@@ -35,18 +35,18 @@ public class VeiculoEntity {
   private MarcaEntity marca;
 
   @Column(nullable = false)
-  @Schema(description="Campo modelo" ,requiredMode = RequiredMode.REQUIRED)
+  @Schema(description="Campo modelo" ,example= "Song-Pro",requiredMode = RequiredMode.REQUIRED)
   @NotBlank(message = "O nome não pode ser vazio")
   @Size(min = 2, max = 255, message = "O nome deve ter no mínimo 2 caracteres")
   private String modelo;
 
   @Column(nullable = false)
-  @Schema(description="Campo ano" ,requiredMode = RequiredMode.REQUIRED)
+  @Schema(description="Campo ano" ,example= "2025",requiredMode = RequiredMode.REQUIRED)
   @Positive(message = "O ano deve ser um número positivo.")
   private Integer ano;
 
   @Column(nullable = false)
-  @Schema(description="Campo valor" ,requiredMode = RequiredMode.REQUIRED)
+  @Schema(description="Campo valor" ,example= "12000",requiredMode = RequiredMode.REQUIRED)
   @Digits(integer = 8, fraction = 2, message = "O preço deve ser valor com duas decimais.")
   private BigDecimal valor;
 }

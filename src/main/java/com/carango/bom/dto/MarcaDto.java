@@ -7,6 +7,6 @@ import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 
 @JsonRootName(value="Marca")
 public record MarcaDto(
-		@Schema(description="Campo de senha" ,requiredMode = RequiredMode.REQUIRED)
+		@Schema(description="Campo de nome" ,example= "BYD",requiredMode = RequiredMode.REQUIRED)
    String nome
 ) {}
