@@ -7,7 +7,7 @@ import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-@JsonRootName(value="Costumer")
+@JsonRootName(value="Cliente")
 public class CustomerRequest {
 
 	@Schema(description="Campo de usuário" ,requiredMode = RequiredMode.REQUIRED)
