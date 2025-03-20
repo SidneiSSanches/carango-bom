@@ -1,10 +1,9 @@
 package com.carango.bom.controller;
 
+import com.carango.bom.controller.swagger.MarcaSwaggerController;
 import com.carango.bom.dto.MarcaDto;
-import com.carango.bom.repository.marca.entity.MarcaEntity;
 import com.carango.bom.service.impl.MarcaServiceImpl;
 
-import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -18,24 +17,23 @@ import java.net.URI;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/marcas")
-public class MarcaController {
+public class MarcaController implements MarcaSwaggerController {
     private MarcaServiceImpl marcaService;
 
     @GetMapping
-    @Operation(summary="Listagem Marca",tags="Listagem",description="Funcionalidade de listagem das marcas cadastradas")
-    public Page<MarcaEntity> listarTodas(@PageableDefault(size = 10)  Pageable paginacao) {
+    @Override
+    public Page<MarcaDto> listarTodas(@PageableDefault(size = 10)  Pageable paginacao) {
         return marcaService.listarTodas(paginacao);
     }
 
     @GetMapping("/{id}")
-    @Operation(summary="Busca Marca",tags="Busca",description="Funcionalidade de busca da marca cadastrada")
+    @Override
     public ResponseEntity<MarcaDto> buscarPorId(@PathVariable Long id) {
-        MarcaEntity marcaEntity = marcaService.buscarPorId(id);
-        return ResponseEntity.ok(new MarcaDto(marcaEntity.getId(), marcaEntity.getNome()));
+        return ResponseEntity.ok(marcaService.buscarPorId(id));
     }
 
     @PostMapping
-    @Operation(summary="Cadastro Marca",tags="Cadastro",description="Funcionalidade de cadastro de uma marca")
+    @Override
     public ResponseEntity<Object> criarMarca(@Valid @RequestBody MarcaDto marcaDto) {
         marcaService.criarMarca(marcaDto);
 
@@ -44,16 +42,16 @@ public class MarcaController {
     }
 
     @DeleteMapping("/{id}")
-    @Operation(summary="Exclusão Marca",tags="Exclusão",description="Funcionalidade de exclusão de uma marca cadastrada")
+    @Override
     public ResponseEntity<Object> excluirMarca(@PathVariable Long id) {
         marcaService.excluir(id);
 
-       return ResponseEntity.noContent()
+        return ResponseEntity.noContent()
                 .build();
     }
 
     @PutMapping("/{marca_id}")
-    @Operation(summary="Atualização Marca",tags="Atualização",description="Funcionalidade de Atualização de uma marca cadastrada")
+    @Override
     public ResponseEntity<Object> atualizarMarca(
             @PathVariable(name = "marca_id") Long marcaId,
             @RequestBody MarcaDto marcaDto) {

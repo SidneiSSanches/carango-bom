@@ -3,6 +3,7 @@ package com.carango.bom.service.impl;
 import com.carango.bom.dto.MarcaDto;
 import com.carango.bom.dto.NovoVeiculoDto;
 import com.carango.bom.dto.VeiculoDto;
+import com.carango.bom.repository.marca.entity.MarcaEntity;
 import com.carango.bom.repository.veiculo.VeiculoRepository;
 import com.carango.bom.repository.veiculo.entity.VeiculoEntity;
 import com.carango.bom.service.MarcaService;
@@ -30,9 +31,9 @@ public class VeiculoServiceImpl implements VeiculoService {
 
   @Override
   public List<VeiculoDto> listarPorMarca(Long marcaId) {
-    var marcaEntity = marcaService.buscarPorId(marcaId);
+    var marcaDto = marcaService.buscarPorId(marcaId);
 
-    return veiculoRepository.findByMarca(marcaEntity).stream()
+    return veiculoRepository.findByMarca(criarMarcaEntity(marcaDto)).stream()
             .map(this::criarVeiculoDto)
             .toList();
   }
@@ -47,10 +48,10 @@ public class VeiculoServiceImpl implements VeiculoService {
   @Transactional
   @Override
   public void criarVeiculo(NovoVeiculoDto novoVeiculoDto) {
-    var marcaVeiculoEntity = marcaService.buscarPorId(novoVeiculoDto.marcaId());
+    var marcaDto = marcaService.buscarPorId(novoVeiculoDto.marcaId());
 
     var veiculoEntity = VeiculoEntity.builder()
-            .marca(marcaVeiculoEntity)
+            .marca(criarMarcaEntity(marcaDto))
             .modelo(novoVeiculoDto.modelo())
             .ano(novoVeiculoDto.ano())
             .valor(novoVeiculoDto.valor())
@@ -63,9 +64,9 @@ public class VeiculoServiceImpl implements VeiculoService {
   @Override
   public void atualizarVeiculo(Long id, NovoVeiculoDto novoVeiculoDto) {
     var veiculoEntity = veiculoRepository.findById(id).orElseThrow();
-    var marcaEntity = marcaService.buscarPorId(novoVeiculoDto.marcaId());
+    var marcaDto = marcaService.buscarPorId(novoVeiculoDto.marcaId());
 
-    veiculoEntity.setMarca(marcaEntity);
+    veiculoEntity.setMarca(criarMarcaEntity(marcaDto));
     veiculoEntity.setModelo(novoVeiculoDto.modelo());
     veiculoEntity.setAno(novoVeiculoDto.ano());
     veiculoEntity.setValor(novoVeiculoDto.valor());
@@ -89,5 +90,12 @@ public class VeiculoServiceImpl implements VeiculoService {
             veiculoEntity.getAno(),
             veiculoEntity.getValor()
     );
+  }
+
+  private MarcaEntity criarMarcaEntity(MarcaDto marcaDto) {
+    return MarcaEntity.builder()
+            .id(marcaDto.id())
+            .nome(marcaDto.nome())
+            .build();
   }
 }

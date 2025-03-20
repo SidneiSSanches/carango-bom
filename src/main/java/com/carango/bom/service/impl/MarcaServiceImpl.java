@@ -17,13 +17,15 @@ public class MarcaServiceImpl implements MarcaService {
     private MarcaRepository marcaRepository;
 
     @Override
-    public Page<MarcaEntity> listarTodas(Pageable paginacao) {
-        return marcaRepository.findAll(paginacao);
+    public Page<MarcaDto> listarTodas(Pageable paginacao) {
+        return marcaRepository.findAll(paginacao)
+                .map(this::criarMarcaDto);
     }
 
     @Override
-    public MarcaEntity buscarPorId(Long id) {
+    public MarcaDto buscarPorId(Long id) {
         return marcaRepository.findById(id)
+                .map(this::criarMarcaDto)
                 .orElseThrow(() -> new EntityNotFoundException("MarcaVeiculo com ID " + id + " não foi encontrada."));
     }
 
@@ -53,5 +55,12 @@ public class MarcaServiceImpl implements MarcaService {
         marcaEntity.setNome(marcaDto.nome());
 
         marcaRepository.save(marcaEntity);
+    }
+
+    private MarcaDto criarMarcaDto(MarcaEntity marcaEntity) {
+        return new MarcaDto(
+                marcaEntity.getId(),
+                marcaEntity.getNome()
+        );
     }
 }
