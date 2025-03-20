@@ -29,15 +29,25 @@ public class SecurityConfig {
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		http.csrf(csrf -> csrf.disable()).cors(cors -> cors.configurationSource(corsConfigurationSource())) // Enable
-																											// CORS
-				.authorizeHttpRequests(
-						authz -> authz.requestMatchers("/authenticate").permitAll().anyRequest().authenticated())
-				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-		http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
-		return http.build();
-	}
+	    http
+	        .csrf(csrf -> csrf.disable())
+	        .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+	        .authorizeHttpRequests(authz -> authz
+	            .requestMatchers(
+	                "/swagger-ui/**", 
+	                "/v3/api-docs/**",
+	                "/swagger-resources/**", 
+	                "/webjars/**"
+	            ).permitAll() // Libera o Swagger
+	            .requestMatchers("/authenticate").permitAll()
+	            .anyRequest().authenticated()
+	        )
+	        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
+	    http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+	    
+	    return http.build();
+	}
 	@Bean
 	public AuthenticationManager authenticationManagerBean(AuthenticationConfiguration authenticationConfiguration)
 			throws Exception {
