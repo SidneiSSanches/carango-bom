@@ -35,9 +35,9 @@ public class MarcaController implements MarcaSwaggerController {
     @PostMapping
     @Override
     public ResponseEntity<Object> criarMarca(@Valid @RequestBody MarcaDto marcaDto) {
-        marcaService.criarMarca(marcaDto);
+        var marca = marcaService.criarMarca(marcaDto);
 
-        return ResponseEntity.created( URI.create("/marcas"))
+        return ResponseEntity.created( URI.create("/marcas/" + marca.id()))
                 .build();
     }
 

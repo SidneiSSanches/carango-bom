@@ -31,12 +31,12 @@ public class MarcaServiceImpl implements MarcaService {
 
     @Transactional
     @Override
-    public void criarMarca(MarcaDto marca) {
+    public MarcaDto criarMarca(MarcaDto marca) {
         var marcaEntity = MarcaEntity.builder()
                 .nome(marca.nome())
                 .build();
 
-        marcaRepository.save(marcaEntity);
+        return criarMarcaDto(marcaRepository.save(marcaEntity));
     }
 
     @Transactional
