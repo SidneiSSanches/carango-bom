@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface MarcaVeiculoRepository extends JpaRepository<MarcaEntity, Long> {
+public interface MarcaRepository extends JpaRepository<MarcaEntity, Long> {
     Optional<MarcaEntity> findByNome(String nome);
 }

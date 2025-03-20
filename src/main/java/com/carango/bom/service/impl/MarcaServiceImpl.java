@@ -1,7 +1,7 @@
 package com.carango.bom.service.impl;
 
 import com.carango.bom.dto.MarcaDto;
-import com.carango.bom.repository.marca.MarcaVeiculoRepository;
+import com.carango.bom.repository.marca.MarcaRepository;
 import com.carango.bom.repository.marca.entity.MarcaEntity;
 import com.carango.bom.service.MarcaService;
 import jakarta.persistence.EntityNotFoundException;
@@ -9,24 +9,22 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @AllArgsConstructor
 @Service
 public class MarcaServiceImpl implements MarcaService {
-    private MarcaVeiculoRepository repository;
+    private MarcaRepository marcaRepository;
 
     @Override
     public Page<MarcaEntity> listarTodas(Pageable paginacao) {
-        return repository.findAll(paginacao);
+        return marcaRepository.findAll(paginacao);
     }
 
     @Override
     public MarcaEntity buscarPorId(Long id) {
-        return repository.findById(id).orElseThrow(() -> new EntityNotFoundException("MarcaVeiculo com ID " + id + " não foi encontrada."));
+        return marcaRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("MarcaVeiculo com ID " + id + " não foi encontrada."));
     }
 
     @Transactional
@@ -35,30 +33,25 @@ public class MarcaServiceImpl implements MarcaService {
         var marcaEntity = MarcaEntity.builder()
                 .nome(marca.nome())
                 .build();
-        repository.save(marcaEntity);
+
+        marcaRepository.save(marcaEntity);
     }
 
     @Transactional
     @Override
     public void excluir(Long id) {
-        repository.deleteById(id);
+        var marcaEntity = marcaRepository.findById(id).orElseThrow();
+
+        marcaRepository.delete(marcaEntity);
     }
 
     @Transactional
     @Override
-    public ResponseEntity atualizarMarca(Long id, MarcaDto marca) {
-        var marcaEntity = repository.findById(id);
+    public void atualizarMarca(Long id, MarcaDto marcaDto) {
+        var marcaEntity = marcaRepository.findById(id).orElseThrow();
 
-        if (marcaEntity.isPresent()) {
-            var marcaEntityAtualizada = MarcaEntity.builder()
-                    .id(id)
-                    .nome(marca.nome())
-                    .build();
+        marcaEntity.setNome(marcaDto.nome());
 
-            repository.save(marcaEntityAtualizada);
-            return ResponseEntity.ok().body(marca);
-        } else{
-            return ResponseEntity.noContent().build();
-        }
+        marcaRepository.save(marcaEntity);
     }
 }

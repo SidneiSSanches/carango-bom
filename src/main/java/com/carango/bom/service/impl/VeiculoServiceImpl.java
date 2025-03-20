@@ -1,6 +1,8 @@
 package com.carango.bom.service.impl;
 
+import com.carango.bom.dto.MarcaDto;
 import com.carango.bom.dto.NovoVeiculoDto;
+import com.carango.bom.dto.VeiculoDto;
 import com.carango.bom.repository.veiculo.VeiculoRepository;
 import com.carango.bom.repository.veiculo.entity.VeiculoEntity;
 import com.carango.bom.service.MarcaService;
@@ -21,26 +23,31 @@ public class VeiculoServiceImpl implements VeiculoService {
   private MarcaService marcaService;
 
   @Override
-  public Page<VeiculoEntity> listarVeiculos(Pageable paginacao) {
-    return veiculoRepository.findAll(paginacao);
+  public Page<VeiculoDto> listarVeiculos(Pageable paginacao) {
+    return veiculoRepository.findAll(paginacao)
+            .map(this::criarVeiculoDto);
   }
 
   @Override
-  public List<VeiculoEntity> listarPorMarca(Long marcaId) {
+  public List<VeiculoDto> listarPorMarca(Long marcaId) {
     var marcaEntity = marcaService.buscarPorId(marcaId);
 
-    return veiculoRepository.findByMarca(marcaEntity);
+    return veiculoRepository.findByMarca(marcaEntity).stream()
+            .map(this::criarVeiculoDto)
+            .toList();
   }
 
   @Override
-  public List<VeiculoEntity> listarPorFaixaValor(BigDecimal valorMinimo, BigDecimal valorMaximo) {
-    return veiculoRepository.findAllByValorBetween(valorMinimo, valorMaximo);
+  public List<VeiculoDto> listarPorFaixaValor(BigDecimal valorMinimo, BigDecimal valorMaximo) {
+    return veiculoRepository.findAllByValorBetween(valorMinimo, valorMaximo).stream()
+            .map(this::criarVeiculoDto)
+            .toList();
   }
 
   @Transactional
   @Override
   public void criarVeiculo(NovoVeiculoDto novoVeiculoDto) {
-    var marcaVeiculoEntity = marcaService.buscarPorId(novoVeiculoDto.idMarca());
+    var marcaVeiculoEntity = marcaService.buscarPorId(novoVeiculoDto.marcaId());
 
     var veiculoEntity = VeiculoEntity.builder()
             .marca(marcaVeiculoEntity)
@@ -56,7 +63,7 @@ public class VeiculoServiceImpl implements VeiculoService {
   @Override
   public void atualizarVeiculo(Long id, NovoVeiculoDto novoVeiculoDto) {
     var veiculoEntity = veiculoRepository.findById(id).orElseThrow();
-    var marcaEntity = marcaService.buscarPorId(novoVeiculoDto.idMarca());
+    var marcaEntity = marcaService.buscarPorId(novoVeiculoDto.marcaId());
 
     veiculoEntity.setMarca(marcaEntity);
     veiculoEntity.setModelo(novoVeiculoDto.modelo());
@@ -72,5 +79,15 @@ public class VeiculoServiceImpl implements VeiculoService {
     var veiculoEntity = veiculoRepository.findById(id).orElseThrow();
 
     veiculoRepository.delete(veiculoEntity);
+  }
+
+  private VeiculoDto criarVeiculoDto(VeiculoEntity veiculoEntity) {
+    return new VeiculoDto(
+            veiculoEntity.getId(),
+            new MarcaDto(veiculoEntity.getMarca().getId(), veiculoEntity.getMarca().getNome()),
+            veiculoEntity.getModelo(),
+            veiculoEntity.getAno(),
+            veiculoEntity.getValor()
+    );
   }
 }
