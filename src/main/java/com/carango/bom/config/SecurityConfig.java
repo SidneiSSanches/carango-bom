@@ -37,9 +37,11 @@ public class SecurityConfig {
 	                "/swagger-ui/**", 
 	                "/v3/api-docs/**",
 	                "/swagger-resources/**", 
-	                "/webjars/**"
-	            ).permitAll() // Libera o Swagger
+	                "/webjars/**",// Libera o Swagger
+	                "/h2-console/**" // Libera acesso ao H2 Console
+	            ).permitAll() 
 	            .requestMatchers("/authenticate").permitAll()
+	            .requestMatchers("/h2-console").permitAll()
 	            .anyRequest().authenticated()
 	        )
 	        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
