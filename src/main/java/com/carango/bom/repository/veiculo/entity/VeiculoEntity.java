@@ -22,7 +22,6 @@ import java.math.BigDecimal;
 @Table(name = "veiculos")
 @JsonRootName(value="Veiculos")
 public class VeiculoEntity {
-
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Schema(description="Campo id" ,example= "9999",requiredMode = RequiredMode.REQUIRED)
