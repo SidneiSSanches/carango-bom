@@ -1,17 +1,22 @@
 package com.carango.bom.service.impl;
 
+import static com.carango.bom.service.exception.enumerator.MensagemErroEnum.MARCA_NAO_ENCONTRADO;
+
+import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+import com.carango.bom.dto.DashboardMarcaProjecao;
 import com.carango.bom.dto.MarcaDto;
 import com.carango.bom.repository.marca.MarcaRepository;
 import com.carango.bom.repository.marca.entity.MarcaEntity;
 import com.carango.bom.service.MarcaService;
 import com.carango.bom.service.exception.DadoNaoEncontrado;
+
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-
-import static com.carango.bom.service.exception.enumerator.MensagemErroEnum.MARCA_NAO_ENCONTRADO;
 
 @AllArgsConstructor
 @Service
@@ -67,4 +72,9 @@ public class MarcaServiceImpl implements MarcaService {
                 marcaEntity.getNome()
         );
     }
+    
+    @Override
+	public List<DashboardMarcaProjecao> getSumarioMarcas() {
+		return marcaRepository.getSumarioMarcas();
+	}
 }
