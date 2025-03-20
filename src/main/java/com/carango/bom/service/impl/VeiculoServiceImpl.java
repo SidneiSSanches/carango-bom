@@ -8,6 +8,7 @@ import com.carango.bom.repository.veiculo.VeiculoRepository;
 import com.carango.bom.repository.veiculo.entity.VeiculoEntity;
 import com.carango.bom.service.MarcaService;
 import com.carango.bom.service.VeiculoService;
+import com.carango.bom.service.exception.DadoNaoEncontrado;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -16,6 +17,8 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
+
+import static com.carango.bom.service.exception.enumerator.MensagemErroEnum.VEICULO_NAO_ENCONTRADO;
 
 @AllArgsConstructor
 @Service
@@ -63,7 +66,9 @@ public class VeiculoServiceImpl implements VeiculoService {
   @Transactional
   @Override
   public void atualizarVeiculo(Long id, NovoVeiculoDto novoVeiculoDto) {
-    var veiculoEntity = veiculoRepository.findById(id).orElseThrow();
+    var veiculoEntity = veiculoRepository.findById(id)
+            .orElseThrow(() -> new DadoNaoEncontrado(VEICULO_NAO_ENCONTRADO.getTexto()));
+
     var marcaDto = marcaService.buscarPorId(novoVeiculoDto.marcaId());
 
     veiculoEntity.setMarca(criarMarcaEntity(marcaDto));
@@ -77,7 +82,8 @@ public class VeiculoServiceImpl implements VeiculoService {
   @Transactional
   @Override
   public void removerVeiculo(Long id) {
-    var veiculoEntity = veiculoRepository.findById(id).orElseThrow();
+    var veiculoEntity = veiculoRepository.findById(id)
+            .orElseThrow(() -> new DadoNaoEncontrado(VEICULO_NAO_ENCONTRADO.getTexto()));
 
     veiculoRepository.delete(veiculoEntity);
   }

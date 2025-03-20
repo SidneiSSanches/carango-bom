@@ -4,12 +4,14 @@ import com.carango.bom.dto.MarcaDto;
 import com.carango.bom.repository.marca.MarcaRepository;
 import com.carango.bom.repository.marca.entity.MarcaEntity;
 import com.carango.bom.service.MarcaService;
-import jakarta.persistence.EntityNotFoundException;
+import com.carango.bom.service.exception.DadoNaoEncontrado;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import static com.carango.bom.service.exception.enumerator.MensagemErroEnum.MARCA_NAO_ENCONTRADO;
 
 @AllArgsConstructor
 @Service
@@ -26,7 +28,7 @@ public class MarcaServiceImpl implements MarcaService {
     public MarcaDto buscarPorId(Long id) {
         return marcaRepository.findById(id)
                 .map(this::criarMarcaDto)
-                .orElseThrow(() -> new EntityNotFoundException("MarcaVeiculo com ID " + id + " não foi encontrada."));
+                .orElseThrow(() -> new DadoNaoEncontrado(MARCA_NAO_ENCONTRADO.getTexto()));
     }
 
     @Transactional
@@ -42,7 +44,8 @@ public class MarcaServiceImpl implements MarcaService {
     @Transactional
     @Override
     public void excluir(Long id) {
-        var marcaEntity = marcaRepository.findById(id).orElseThrow();
+        var marcaEntity = marcaRepository.findById(id)
+                .orElseThrow(() -> new DadoNaoEncontrado(MARCA_NAO_ENCONTRADO.getTexto()));
 
         marcaRepository.delete(marcaEntity);
     }
@@ -50,7 +53,8 @@ public class MarcaServiceImpl implements MarcaService {
     @Transactional
     @Override
     public void atualizarMarca(Long id, MarcaDto marcaDto) {
-        var marcaEntity = marcaRepository.findById(id).orElseThrow();
+        var marcaEntity = marcaRepository.findById(id)
+                .orElseThrow(() -> new DadoNaoEncontrado("Não foi possível localizar a marca informada"));
 
         marcaEntity.setNome(marcaDto.nome());
 
