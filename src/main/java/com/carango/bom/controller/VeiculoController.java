@@ -48,9 +48,9 @@ public class VeiculoController implements VeiculoSwaggerController {
   @PostMapping
   @Override
   public ResponseEntity<Object> criarVeiculo(@Valid @RequestBody NovoVeiculoDto novoVeiculoDto) {
-    veiculoService.criarVeiculo(novoVeiculoDto);
+    var veiculo = veiculoService.criarVeiculo(novoVeiculoDto);
 
-    return ResponseEntity.created( URI.create("/veiculos"))
+    return ResponseEntity.created( URI.create("/veiculos/" + veiculo.id()))
             .build();
   }
 

@@ -12,7 +12,7 @@ public interface VeiculoService {
   Page<VeiculoDto> listarVeiculos(Pageable paginacao);
   List<VeiculoDto> listarPorMarca(Long marcaId);
   List<VeiculoDto> listarPorFaixaValor(BigDecimal valorMinimo, BigDecimal valorMaximo);
-  void criarVeiculo(NovoVeiculoDto novoVeiculoDto);
+  VeiculoDto criarVeiculo(NovoVeiculoDto novoVeiculoDto);
   void atualizarVeiculo(Long id, NovoVeiculoDto novoVeiculoDto);
   void removerVeiculo(Long id);
 }

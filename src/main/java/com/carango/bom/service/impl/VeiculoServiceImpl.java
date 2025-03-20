@@ -47,7 +47,7 @@ public class VeiculoServiceImpl implements VeiculoService {
 
   @Transactional
   @Override
-  public void criarVeiculo(NovoVeiculoDto novoVeiculoDto) {
+  public VeiculoDto criarVeiculo(NovoVeiculoDto novoVeiculoDto) {
     var marcaDto = marcaService.buscarPorId(novoVeiculoDto.marcaId());
 
     var veiculoEntity = VeiculoEntity.builder()
@@ -57,7 +57,7 @@ public class VeiculoServiceImpl implements VeiculoService {
             .valor(novoVeiculoDto.valor())
             .build();
 
-    veiculoRepository.save(veiculoEntity);
+    return criarVeiculoDto(veiculoRepository.save(veiculoEntity));
   }
 
   @Transactional
