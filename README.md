@@ -56,6 +56,33 @@ Explique que eles verificam esses testes e porquê.
 Dar exemplos
 ```
 
+## Processo de autenticação para /authenticate Endpoint
+
+Este projeto usa autenticação baseada em JWT (JSON Web Token) para proteger endpoints de API. Abaixo está uma descrição do processo de autenticação.
+
+* 1.Processo de Autenticação 
+O usuário deve fazer login fornecendo suas credenciais (nome de usuário e senha). Se as credenciais forem válidas, um token JWT será gerado e retornado ao usuário.
+
+
+Exemplo de Requisição:
+   {
+     "username": "usuario",
+     "password": "senha"
+   }
+
+
+
+Exemplo de Resposta:
+     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+
+* 2.Acessando Endpoints Protegido.
+
+Para acessar endpoints protegidos, o usuário deve incluir o token JWT no cabeçalho da requisição.
+
+Exemplo de Cabeçalho:
+
+   Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
 ## 📦 Implantação
 
 Adicione notas adicionais sobre como implantar isso em um sistema ativo
