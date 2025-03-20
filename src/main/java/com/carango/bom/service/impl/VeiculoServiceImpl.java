@@ -3,6 +3,7 @@ package com.carango.bom.service.impl;
 import com.carango.bom.dto.NovoVeiculoDto;
 import com.carango.bom.repository.veiculo.VeiculoRepository;
 import com.carango.bom.repository.veiculo.entity.VeiculoEntity;
+import com.carango.bom.service.MarcaService;
 import com.carango.bom.service.VeiculoService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -15,7 +16,7 @@ import java.util.List;
 @Service
 public class VeiculoServiceImpl implements VeiculoService {
   private VeiculoRepository veiculoRepository;
-  private MarcaServiceImpl marcaServiceImpl;
+  private MarcaService marcaService;
 
   @Transactional
   @Override
@@ -26,7 +27,7 @@ public class VeiculoServiceImpl implements VeiculoService {
   @Transactional
   @Override
   public List<VeiculoEntity> listarPorMarca(Long marcaId) {
-    var marcaEntity = marcaServiceImpl.buscarPorId(marcaId);
+    var marcaEntity = marcaService.buscarPorId(marcaId);
 
     return veiculoRepository.findByMarca(marcaEntity);
   }
@@ -40,7 +41,7 @@ public class VeiculoServiceImpl implements VeiculoService {
   @Transactional
   @Override
   public void criarVeiculo(NovoVeiculoDto novoVeiculoDto) {
-    var marcaVeiculoEntity = marcaServiceImpl.buscarPorId(novoVeiculoDto.idMarca());
+    var marcaVeiculoEntity = marcaService.buscarPorId(novoVeiculoDto.idMarca());
 
     var veiculoEntity = VeiculoEntity.builder()
             .marca(marcaVeiculoEntity)
@@ -56,7 +57,7 @@ public class VeiculoServiceImpl implements VeiculoService {
   @Override
   public void atualizarVeiculo(Long id, NovoVeiculoDto novoVeiculoDto) {
     var veiculoEntity = veiculoRepository.findById(id).orElseThrow();
-    var marcaEntity = marcaServiceImpl.buscarPorId(novoVeiculoDto.idMarca());
+    var marcaEntity = marcaService.buscarPorId(novoVeiculoDto.idMarca());
 
     veiculoEntity.setMarca(marcaEntity);
     veiculoEntity.setModelo(novoVeiculoDto.modelo());

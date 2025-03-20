@@ -1,22 +1,21 @@
 package com.carango.bom.controller;
 
 import com.carango.bom.repository.marca.entity.MarcaEntity;
-import com.carango.bom.service.impl.MarcaServiceImpl;
 
+import com.carango.bom.service.MarcaService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 @RestController
 @RequestMapping("/marcas")
 public class MarcaVeiculoController {
-    private MarcaServiceImpl service;
+    private MarcaService service;
 
     @GetMapping
     public Page<MarcaEntity> listarTodas(@PageableDefault(size = 10)  Pageable paginacao) {
