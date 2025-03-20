@@ -3,10 +3,12 @@ package com.carango.bom.service.impl;
 import com.carango.bom.dto.NovoVeiculoDto;
 import com.carango.bom.repository.veiculo.VeiculoRepository;
 import com.carango.bom.repository.veiculo.entity.VeiculoEntity;
-import com.carango.bom.service.MarcaVeiculoService;
+import com.carango.bom.service.MarcaService;
 import com.carango.bom.service.VeiculoService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -16,23 +18,20 @@ import java.util.List;
 @Service
 public class VeiculoServiceImpl implements VeiculoService {
   private VeiculoRepository veiculoRepository;
-  private MarcaVeiculoService marcaVeiculoService;
+  private MarcaService marcaService;
 
-  @Transactional
   @Override
-  public List<VeiculoEntity> listarVeiculos() {
-    return veiculoRepository.findAll();
+  public Page<VeiculoEntity> listarVeiculos(Pageable paginacao) {
+    return veiculoRepository.findAll(paginacao);
   }
 
-  @Transactional
   @Override
   public List<VeiculoEntity> listarPorMarca(Long marcaId) {
-    var marcaEntity = marcaVeiculoService.buscarPorId(marcaId);
+    var marcaEntity = marcaService.buscarPorId(marcaId);
 
-    return veiculoRepository.findByMarcaVeiculo(marcaEntity);
+    return veiculoRepository.findByMarca(marcaEntity);
   }
 
-  @Transactional
   @Override
   public List<VeiculoEntity> listarPorFaixaValor(BigDecimal valorMinimo, BigDecimal valorMaximo) {
     return veiculoRepository.findAllByValorBetween(valorMinimo, valorMaximo);
@@ -41,10 +40,10 @@ public class VeiculoServiceImpl implements VeiculoService {
   @Transactional
   @Override
   public void criarVeiculo(NovoVeiculoDto novoVeiculoDto) {
-    var marcaVeiculoEntity = marcaVeiculoService.buscarPorId(novoVeiculoDto.idMarca());
+    var marcaVeiculoEntity = marcaService.buscarPorId(novoVeiculoDto.idMarca());
 
     var veiculoEntity = VeiculoEntity.builder()
-            .marcaVeiculo(marcaVeiculoEntity)
+            .marca(marcaVeiculoEntity)
             .modelo(novoVeiculoDto.modelo())
             .ano(novoVeiculoDto.ano())
             .valor(novoVeiculoDto.valor())
@@ -57,9 +56,9 @@ public class VeiculoServiceImpl implements VeiculoService {
   @Override
   public void atualizarVeiculo(Long id, NovoVeiculoDto novoVeiculoDto) {
     var veiculoEntity = veiculoRepository.findById(id).orElseThrow();
-    var marcaEntity = marcaVeiculoService.buscarPorId(novoVeiculoDto.idMarca());
+    var marcaEntity = marcaService.buscarPorId(novoVeiculoDto.idMarca());
 
-    veiculoEntity.setMarcaVeiculo(marcaEntity);
+    veiculoEntity.setMarca(marcaEntity);
     veiculoEntity.setModelo(novoVeiculoDto.modelo());
     veiculoEntity.setAno(novoVeiculoDto.ano());
     veiculoEntity.setValor(novoVeiculoDto.valor());
