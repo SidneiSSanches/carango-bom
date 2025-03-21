@@ -38,10 +38,13 @@ public class SecurityConfig {
 	                "/v3/api-docs/**",
 	                "/swagger-resources/**", 
 	                "/webjars/**",// Libera o Swagger
-	                "/h2-console/**" // Libera acesso ao H2 Console
+	                "/h2-console/**",// Libera acesso ao H2 Console
+	                "/authenticate/** "
 	            ).permitAll() 
 	            .requestMatchers("/authenticate").permitAll()
 	            .requestMatchers("/h2-console").permitAll()
+	            .requestMatchers("/authenticate/**").permitAll() // Desconsiderar autorização para URLs que começam com "/public/"
+
 	            .anyRequest().authenticated()
 	        )
 	        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
