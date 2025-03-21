@@ -22,20 +22,26 @@ public interface MarcaSwaggerController {
   @Operation(summary = "Listagem Marca", description = "Funcionalidade de listagem das marcas cadastradas")
   Page<MarcaDto> listarTodas(@PageableDefault(size = 10) Pageable paginacao);
 
-  @Operation(summary = "Cadastro Marca", description = "Funcionalidade de busca por id",security = { @SecurityRequirement(name = "bearer-key") })
+  @Operation(summary = "Cadastro Marca", description = "Funcionalidade de busca por id")
+  @SecurityRequirement(name = "bearer-key")
   ResponseEntity<MarcaDto> buscarPorId(@PathVariable Long id);
 
-  @Operation(summary = "Cadastro Marca", description = "Funcionalidade de cadastro de uma marca",security = { @SecurityRequirement(name = "bearer-key") })
+  @Operation(summary = "Cadastro Marca", description = "Funcionalidade de cadastro de uma marca")
+  @SecurityRequirement(name = "bearer-key") 
   ResponseEntity<Object> criarMarca(@Valid @RequestBody MarcaDto marcaDto);
 
-  @Operation(summary = "Exclusão Marca", description = "Funcionalidade de exclusão de uma marca cadastrada",security = { @SecurityRequirement(name = "bearer-key") })
+  @Operation(summary = "Exclusão Marca", description = "Funcionalidade de exclusão de uma marca cadastrada")
+  @SecurityRequirement(name = "bearer-key") 
   ResponseEntity<Object> excluirMarca(@PathVariable Long id);
 
-  @Operation(summary = "Atualização Marca", description = "Funcionalidade de Atualização de uma marca cadastrada",security = { @SecurityRequirement(name = "bearer-key") })
+  @Operation(summary = "Atualização Marca", description = "Funcionalidade de Atualização de uma marca cadastrada")
+  @SecurityRequirement(name = "bearer-key") 
   ResponseEntity<Object> atualizarMarca(
           @PathVariable(name = "marca_id") Long marcaId,
           @RequestBody MarcaDto marcaDto);
   
-  @Operation(summary="Dashboard de marcas",tags="Relatório",description="Funcionalidade de relatório das marcas",security = { @SecurityRequirement(name = "bearer-key") })
+  @Operation(summary="Dashboard de marcas",tags="Relatório",description="Funcionalidade de relatório das marcas")
+  @SecurityRequirement(name = "bearer-key") 
+
   List<DashboardMarcaDto> consultaDashboardMarcas();
 }

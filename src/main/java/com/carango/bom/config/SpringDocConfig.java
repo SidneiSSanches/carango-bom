@@ -26,7 +26,7 @@ public class SpringDocConfig {
 	                    .addSecuritySchemes("bearer-key",
 	                            new SecurityScheme().type(SecurityScheme.Type.HTTP)
 	                                    .scheme("bearer")
-	                                    .bearerFormat("JWT")))
-	            .addSecurityItem(new SecurityRequirement().addList("bearer-key")); // Adicionando os requisitos de segurança
+	                                    .bearerFormat("JWT")));
+	           // .addSecurityItem(new SecurityRequirement().addList("bearer-key")); // Adicionando os requisitos de segurança
 	}
 }
