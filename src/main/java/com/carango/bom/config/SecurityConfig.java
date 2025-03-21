@@ -41,9 +41,8 @@ public class SecurityConfig {
 	                "/h2-console/**",// Libera acesso ao H2 Console
 	                "/authenticate/** "
 	            ).permitAll() 
-	            .requestMatchers("/authenticate").permitAll()
-	            .requestMatchers("/h2-console").permitAll()
-	            .requestMatchers("/authenticate/**").permitAll() // Desconsiderar autorização para URLs que começam com "/public/"
+	            .requestMatchers("/h2-console/**").permitAll()
+	            .requestMatchers("/authenticate/**").permitAll() 
 
 	            .anyRequest().authenticated()
 	        )

@@ -30,14 +30,14 @@ public interface VeiculoSwaggerController {
                                                          @RequestParam(name = "valor_minimo") BigDecimal valorMinimo,
                                                          @RequestParam(name = "valor_maximo") BigDecimal valorMaximo);
 
-  @Operation(summary = "Cadastro Veiculo", description = "Funcionalidade de cadastro de um Veiculo",security = { @SecurityRequirement(name = "bearer-key") })
+  @Operation(summary = "Cadastra Veiculo", description = "Funcionalidade de cadastro de um Veiculo",security = { @SecurityRequirement(name = "bearer-key") })
   ResponseEntity<Object> criarVeiculo(@Valid @RequestBody NovoVeiculoDto novoVeiculoDto);
 
-  @Operation(summary = "Atualização Veiculo", description = "Funcionalidade de Atualização de um Veiculo cadastrado",security = { @SecurityRequirement(name = "bearer-key") })
+  @Operation(summary = "Atualiza Veiculo", description = "Funcionalidade de Atualização de um Veiculo cadastrado",security = { @SecurityRequirement(name = "bearer-key") })
   ResponseEntity<Object> atualizarVeiculo(@Valid
                                                  @PathVariable(name = "veiculo_id") Long veiculoId,
                                                  @RequestBody NovoVeiculoDto novoVeiculoDto);
 
-  @Operation(summary = "Exclusão Veiculo", description = "Funcionalidade de exclusão de um Veiculo cadastrado",security = { @SecurityRequirement(name = "bearer-key") })
+  @Operation(summary = "Exclui Veiculo", description = "Funcionalidade de exclusão de um Veiculo cadastrado",security = { @SecurityRequirement(name = "bearer-key") })
   ResponseEntity<Object> removerVeiculo(@Valid @PathVariable(name = "veiculo_id") Long veiculoId);
 }
