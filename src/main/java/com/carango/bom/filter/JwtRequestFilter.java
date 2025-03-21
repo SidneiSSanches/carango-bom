@@ -1,7 +1,7 @@
 package com.carango.bom.filter;
 
 import com.carango.bom.service.impl.UserServiceImpl;
-import com.carango.bom.util.JwTokenUtil;
+import com.carango.bom.utils.JwTokenUtils;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -25,7 +25,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     private UserServiceImpl userServiceImpl;
 
     @Autowired
-    private JwTokenUtil jwtUtil;
+    private JwTokenUtils jwtUtil;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)

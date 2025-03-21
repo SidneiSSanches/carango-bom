@@ -14,7 +14,7 @@ import com.carango.bom.controller.swagger.AuthenticationSwaggerController;
 import com.carango.bom.dto.AuthenticationRequestDto;
 import com.carango.bom.dto.JwtDto;
 import com.carango.bom.service.impl.UserServiceImpl;
-import com.carango.bom.util.JwTokenUtil;
+import com.carango.bom.utils.JwTokenUtils;
 
 
 @RestController
@@ -27,7 +27,7 @@ public class AuthenticationController implements AuthenticationSwaggerController
 	private UserServiceImpl userServiceImpl;
 
 	@Autowired
-	private JwTokenUtil jwTokenUtil;
+	private JwTokenUtils jwTokenUtils;
 
 	@PostMapping("/authenticate")
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequestDto authenticationRequest)
@@ -38,7 +38,7 @@ public class AuthenticationController implements AuthenticationSwaggerController
 
 		final UserDetails userDetails = userServiceImpl.loadUserByUsername(authenticationRequest.getUsername());
 
-		final String jwt = jwTokenUtil.generateToken(userDetails);
+		final String jwt = jwTokenUtils.generateToken(userDetails);
 
 		return ResponseEntity.ok(new JwtDto(jwt));
 	}

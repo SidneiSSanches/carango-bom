@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.Collections;
 import java.util.Date;
 
+import com.carango.bom.utils.JwTokenUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.core.userdetails.User;
@@ -15,13 +16,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 public class JwtUtilTest {
 
-    private JwTokenUtil jwtUtil;
+    private JwTokenUtils jwtUtil;
     private UserDetails userDetails;
     
 
     @BeforeEach
     public void setUp() {
-        jwtUtil = new JwTokenUtil();
+        jwtUtil = new JwTokenUtils();
         userDetails = new User("testuser", "password", Collections.emptyList());
     }
     

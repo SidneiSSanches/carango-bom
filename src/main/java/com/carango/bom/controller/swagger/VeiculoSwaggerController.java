@@ -15,20 +15,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 @Tag(name = "CRUD de veículos", description = "Gerencia as operações de veículos")
 public interface VeiculoSwaggerController {
   @Operation(summary = "Lista Veiculos", description = "Funcionalidade de listagem dos veiculos cadastrados")
-  Page<VeiculoDto> listarVeiculos(@PageableDefault(size = 10) Pageable paginacao);
-
-  @Operation(summary = "Busca Veiculos por Marca", description = "Funcionalidade de listagem dos veiculos cadastrados por marca",security = { @SecurityRequirement(name = "bearer-key") })
-  ResponseEntity<List<VeiculoDto>> listarPorMarca(@PathVariable(name = "marca_id") Long marcaId);
-
-  @Operation(summary = "Lista Veiculos por faixa de preço", description = "Funcionalidade de listagem dos veiculos cadastrados por faixa de preço",security = { @SecurityRequirement(name = "bearer-key") })
-  ResponseEntity<List<VeiculoDto>> listarPorFaixa(@Valid
-                                                         @RequestParam(name = "valor_minimo") BigDecimal valorMinimo,
-                                                         @RequestParam(name = "valor_maximo") BigDecimal valorMaximo);
+  Page<VeiculoDto> listarVeiculos(
+          @Valid
+          @PageableDefault(size = 10) Pageable paginacao,
+          @RequestParam(name = "marca_id", required = false) Long marcaId,
+          @RequestParam(name = "valor_minimo", required = false) BigDecimal valorMinimo,
+          @RequestParam(name = "valor_maximo", required = false) BigDecimal valorMaximo
+  );
 
   @Operation(summary = "Cadastra Veiculo", description = "Funcionalidade de cadastro de um Veiculo",security = { @SecurityRequirement(name = "bearer-key") })
   ResponseEntity<Object> criarVeiculo(@Valid @RequestBody NovoVeiculoDto novoVeiculoDto);

@@ -1,23 +1,25 @@
 package com.carango.bom.service.impl;
 
-import com.carango.bom.dto.MarcaDto;
+import com.carango.bom.dto.FiltroBuscaVeiculoDto;
 import com.carango.bom.dto.NovoVeiculoDto;
 import com.carango.bom.dto.VeiculoDto;
-import com.carango.bom.repository.marca.entity.MarcaEntity;
 import com.carango.bom.repository.veiculo.VeiculoRepository;
 import com.carango.bom.repository.veiculo.entity.VeiculoEntity;
 import com.carango.bom.service.MarcaService;
 import com.carango.bom.service.VeiculoService;
 import com.carango.bom.service.exception.DadoNaoEncontrado;
+import com.carango.bom.service.strategy.veiculo.FiltroBuscaVeiculoStrategy;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
+import static com.carango.bom.utils.ConverteDtoParaEntityUtils.paraMarcaEntity;
+import static com.carango.bom.utils.ConverteEntityParaDtoUtils.paraVeiculoDto;
 import static com.carango.bom.service.exception.enumerator.MensagemErroEnum.VEICULO_NAO_ENCONTRADO;
 
 @AllArgsConstructor
@@ -25,27 +27,20 @@ import static com.carango.bom.service.exception.enumerator.MensagemErroEnum.VEIC
 public class VeiculoServiceImpl implements VeiculoService {
   private VeiculoRepository veiculoRepository;
   private MarcaService marcaService;
+  private List<FiltroBuscaVeiculoStrategy> filtroBuscaVeiculoStrategyList;
 
   @Override
-  public Page<VeiculoDto> listarVeiculos(Pageable paginacao) {
-    return veiculoRepository.findAll(paginacao)
-            .map(this::criarVeiculoDto);
-  }
+  public Page<VeiculoDto> listarVeiculos(Pageable paginacao, FiltroBuscaVeiculoDto filtroBuscaVeiculoDto) {
+   var page = new AtomicReference<Page<VeiculoDto>>();
 
-  @Override
-  public List<VeiculoDto> listarPorMarca(Long marcaId) {
-    var marcaDto = marcaService.buscarPorId(marcaId);
+    filtroBuscaVeiculoStrategyList
+            .forEach(strategy -> {
+              if (page.get() == null) {
+                page.set(strategy.filtrar(paginacao, filtroBuscaVeiculoDto));
+              }
+            });
 
-    return veiculoRepository.findByMarca(criarMarcaEntity(marcaDto)).stream()
-            .map(this::criarVeiculoDto)
-            .toList();
-  }
-
-  @Override
-  public List<VeiculoDto> listarPorFaixaValor(BigDecimal valorMinimo, BigDecimal valorMaximo) {
-    return veiculoRepository.findAllByValorBetween(valorMinimo, valorMaximo).stream()
-            .map(this::criarVeiculoDto)
-            .toList();
+    return page.get();
   }
 
   @Transactional
@@ -54,13 +49,13 @@ public class VeiculoServiceImpl implements VeiculoService {
     var marcaDto = marcaService.buscarPorId(novoVeiculoDto.marcaId());
 
     var veiculoEntity = VeiculoEntity.builder()
-            .marca(criarMarcaEntity(marcaDto))
+            .marca(paraMarcaEntity(marcaDto))
             .modelo(novoVeiculoDto.modelo())
             .ano(novoVeiculoDto.ano())
             .valor(novoVeiculoDto.valor())
             .build();
 
-    return criarVeiculoDto(veiculoRepository.save(veiculoEntity));
+    return paraVeiculoDto(veiculoRepository.save(veiculoEntity));
   }
 
   @Transactional
@@ -71,7 +66,7 @@ public class VeiculoServiceImpl implements VeiculoService {
 
     var marcaDto = marcaService.buscarPorId(novoVeiculoDto.marcaId());
 
-    veiculoEntity.setMarca(criarMarcaEntity(marcaDto));
+    veiculoEntity.setMarca(paraMarcaEntity(marcaDto));
     veiculoEntity.setModelo(novoVeiculoDto.modelo());
     veiculoEntity.setAno(novoVeiculoDto.ano());
     veiculoEntity.setValor(novoVeiculoDto.valor());
@@ -86,22 +81,5 @@ public class VeiculoServiceImpl implements VeiculoService {
             .orElseThrow(() -> new DadoNaoEncontrado(VEICULO_NAO_ENCONTRADO.getTexto()));
 
     veiculoRepository.delete(veiculoEntity);
-  }
-
-  private VeiculoDto criarVeiculoDto(VeiculoEntity veiculoEntity) {
-    return new VeiculoDto(
-            veiculoEntity.getId(),
-            new MarcaDto(veiculoEntity.getMarca().getId(), veiculoEntity.getMarca().getNome()),
-            veiculoEntity.getModelo(),
-            veiculoEntity.getAno(),
-            veiculoEntity.getValor()
-    );
-  }
-
-  private MarcaEntity criarMarcaEntity(MarcaDto marcaDto) {
-    return MarcaEntity.builder()
-            .id(marcaDto.id())
-            .nome(marcaDto.nome())
-            .build();
   }
 }

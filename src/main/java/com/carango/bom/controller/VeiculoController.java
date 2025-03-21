@@ -1,6 +1,7 @@
 package com.carango.bom.controller;
 
 import com.carango.bom.controller.swagger.VeiculoSwaggerController;
+import com.carango.bom.dto.FiltroBuscaVeiculoDto;
 import com.carango.bom.dto.NovoVeiculoDto;
 import com.carango.bom.dto.VeiculoDto;
 import com.carango.bom.service.VeiculoService;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.net.URI;
-import java.util.List;
 
 @AllArgsConstructor
 @RestController
@@ -25,24 +25,18 @@ public class VeiculoController implements VeiculoSwaggerController {
 
   @GetMapping
   @Override
-  public Page<VeiculoDto> listarVeiculos(@PageableDefault(size = 10) Pageable paginacao) {
-    return veiculoService.listarVeiculos(paginacao);
-  }
+  public Page<VeiculoDto> listarVeiculos(
+          @Valid
+          @PageableDefault(size = 10) Pageable paginacao,
+          @RequestParam(name = "marca_id", required = false) Long marcaId,
+          @RequestParam(name = "valor_minimo", required = false) BigDecimal valorMinimo,
+          @RequestParam(name = "valor_maximo", required = false) BigDecimal valorMaximo
+  ) {
+    var filtroBuscaDto = new FiltroBuscaVeiculoDto(
+            marcaId, valorMinimo, valorMaximo
+    );
 
-  @GetMapping("/marcas/{marca_id}")
-  @Override
-  public ResponseEntity<List<VeiculoDto>> listarPorMarca(@PathVariable(name = "marca_id") Long marcaId) {
-    return ResponseEntity.ok()
-            .body(veiculoService.listarPorMarca(marcaId));
-  }
-
-  @GetMapping("/faixas")
-  @Override
-  public ResponseEntity<List<VeiculoDto>> listarPorFaixa(@Valid
-          @RequestParam(name = "valor_minimo") BigDecimal valorMinimo,
-          @RequestParam(name = "valor_maximo") BigDecimal valorMaximo) {
-    return ResponseEntity.ok()
-            .body(veiculoService.listarPorFaixaValor(valorMinimo, valorMaximo));
+    return veiculoService.listarVeiculos(paginacao, filtroBuscaDto);
   }
 
   @PostMapping
