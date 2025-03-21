@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.carango.bom.controller.swagger.AuthenticationSwaggerController;
 import com.carango.bom.dto.AuthenticationRequestDto;
 import com.carango.bom.dto.JwtDto;
 import com.carango.bom.service.impl.UserServiceImpl;
@@ -17,7 +18,7 @@ import com.carango.bom.util.JwTokenUtil;
 
 
 @RestController
-public class AuthenticationController {
+public class AuthenticationController implements AuthenticationSwaggerController{
 
 	@Autowired
 	private AuthenticationManager authenticationManager;
