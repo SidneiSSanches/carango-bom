@@ -10,7 +10,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 
-@Tag(name = "CRUD de Autenticação", description = "Gerencia as operações de login")
+@Tag(name = "Autenticação", description = "Gerencia o login")
 public interface AuthenticationSwaggerController {
 	
 	@PostMapping("/authenticate")
