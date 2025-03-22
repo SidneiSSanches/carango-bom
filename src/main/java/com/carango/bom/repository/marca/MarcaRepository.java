@@ -1,6 +1,5 @@
 package com.carango.bom.repository.marca;
 
-
 import java.util.List;
 import java.util.Optional;
 
@@ -15,10 +14,12 @@ import com.carango.bom.repository.marca.entity.MarcaEntity;
 public interface MarcaRepository extends JpaRepository<MarcaEntity, Long> {
     Optional<MarcaEntity> findByNome(String nome);
     
-     @Query(value = "SELECT m as marca,COUNT(v) as quantidadeVeiculos, SUM(v.valor) as valorTotalVeiculos\n" +
-                "FROM VeiculoEntity v\n" +
-                "RIGHT JOIN MarcaEntity m\n" +
-                "ON v.marca = m\n" +
-                "GROUP BY m")
+     @Query(value = """
+             SELECT m as marca,COUNT(v) as quantidadeVeiculos, SUM(v.valor) as valorTotalVeiculos
+                             FROM VeiculoEntity v
+                             RIGHT JOIN MarcaEntity m
+                             ON v.marca = m
+                             GROUP BY m
+             """)
         List<DashboardMarcaProjecao> getSumarioMarcas();
 }

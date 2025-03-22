@@ -1,7 +1,7 @@
 
 package com.carango.bom.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,25 +16,18 @@ import com.carango.bom.dto.JwtDto;
 import com.carango.bom.service.impl.UserServiceImpl;
 import com.carango.bom.utils.JwTokenUtils;
 
-
+@AllArgsConstructor
 @RestController
 public class AuthenticationController implements AuthenticationSwaggerController{
-
-	@Autowired
 	private AuthenticationManager authenticationManager;
-
-	@Autowired
 	private UserServiceImpl userServiceImpl;
-
-	@Autowired
 	private JwTokenUtils jwTokenUtils;
 
 	@PostMapping("/authenticate")
-	public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequestDto authenticationRequest)
-			throws Exception {
-
+	@Override
+	public ResponseEntity<Object> createAuthenticationToken(@RequestBody AuthenticationRequestDto authenticationRequest) {
 		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(),
-				authenticationRequest.getPassword()));
+						authenticationRequest.getPassword()));
 
 		final UserDetails userDetails = userServiceImpl.loadUserByUsername(authenticationRequest.getUsername());
 

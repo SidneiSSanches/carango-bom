@@ -13,7 +13,7 @@ import com.carango.bom.dto.MarcaDto;
 import com.carango.bom.repository.marca.MarcaRepository;
 import com.carango.bom.repository.marca.entity.MarcaEntity;
 import com.carango.bom.service.MarcaService;
-import com.carango.bom.service.exception.DadoNaoEncontrado;
+import com.carango.bom.service.exception.DadoNaoEncontradoException;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -33,7 +33,7 @@ public class MarcaServiceImpl implements MarcaService {
     public MarcaDto buscarPorId(Long id) {
         return marcaRepository.findById(id)
                 .map(this::criarMarcaDto)
-                .orElseThrow(() -> new DadoNaoEncontrado(MARCA_NAO_ENCONTRADO.getTexto()));
+                .orElseThrow(() -> new DadoNaoEncontradoException(MARCA_NAO_ENCONTRADO.getTexto()));
     }
 
     @Transactional
@@ -50,7 +50,7 @@ public class MarcaServiceImpl implements MarcaService {
     @Override
     public void excluir(Long id) {
         var marcaEntity = marcaRepository.findById(id)
-                .orElseThrow(() -> new DadoNaoEncontrado(MARCA_NAO_ENCONTRADO.getTexto()));
+                .orElseThrow(() -> new DadoNaoEncontradoException(MARCA_NAO_ENCONTRADO.getTexto()));
 
         marcaRepository.delete(marcaEntity);
     }
@@ -59,7 +59,7 @@ public class MarcaServiceImpl implements MarcaService {
     @Override
     public void atualizarMarca(Long id, MarcaDto marcaDto) {
         var marcaEntity = marcaRepository.findById(id)
-                .orElseThrow(() -> new DadoNaoEncontrado("Não foi possível localizar a marca informada"));
+                .orElseThrow(() -> new DadoNaoEncontradoException("Não foi possível localizar a marca informada"));
 
         marcaEntity.setNome(marcaDto.nome());
 

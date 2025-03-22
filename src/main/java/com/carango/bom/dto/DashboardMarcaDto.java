@@ -1,12 +1,13 @@
 package com.carango.bom.dto;
 
+import lombok.Getter;
+
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
+@Getter
 public class DashboardMarcaDto {
-
     private final String nomeMarca;
     private final Integer quantidadeVeiculos;
     private final BigDecimal valor;
@@ -18,20 +19,7 @@ public class DashboardMarcaDto {
     }
 
     public static List<DashboardMarcaDto> converter(List<DashboardMarcaProjecao> sumarioMarcas) {
-        return sumarioMarcas.stream().map(DashboardMarcaDto::new).collect(Collectors.toList());
-    }
-
-    public String getNomeMarca() {
-        return nomeMarca;
-    }
-
-    public Integer getQuantidadeVeiculos() {
-        return quantidadeVeiculos;
-    }
-
-
-    public BigDecimal getValor() {
-        return valor;
+        return sumarioMarcas.stream().map(DashboardMarcaDto::new).toList();
     }
 
     @Override

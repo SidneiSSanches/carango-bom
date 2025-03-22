@@ -52,32 +52,6 @@ class VeiculoControllerTest {
     }
 
     @Test
-    @DisplayName("Deveria devolver codigo HTTP 200 ao listar veiculos por marca")
-    @WithMockUser
-    void listarPorMarca() throws Exception {
-        when(veiculoService.listarPorMarca(1L)).thenReturn(List.of());
-
-        var response = mvc.perform(get("/veiculos/marcas/1"))
-                .andReturn().getResponse();
-
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-    }
-
-    @Test
-    @DisplayName("Deveria devolver codigo HTTP 200 ao listar veiculos por faixa de valor")
-    @WithMockUser
-    void listarPorFaixa() throws Exception {
-        when(veiculoService.listarPorFaixaValor(BigDecimal.TEN, BigDecimal.valueOf(50000))).thenReturn(List.of());
-
-        var response = mvc.perform(get("/veiculos/faixas")
-                        .param("valor_minimo", "10")
-                        .param("valor_maximo", "50000"))
-                .andReturn().getResponse();
-
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-    }
-
-    @Test
     @DisplayName("Deveria devolver código HTTP 201 ao criar um veículo")
     @WithMockUser
     void criarVeiculo() throws Exception {

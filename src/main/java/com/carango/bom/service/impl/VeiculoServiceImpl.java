@@ -7,7 +7,7 @@ import com.carango.bom.repository.veiculo.VeiculoRepository;
 import com.carango.bom.repository.veiculo.entity.VeiculoEntity;
 import com.carango.bom.service.MarcaService;
 import com.carango.bom.service.VeiculoService;
-import com.carango.bom.service.exception.DadoNaoEncontrado;
+import com.carango.bom.service.exception.DadoNaoEncontradoException;
 import com.carango.bom.service.strategy.veiculo.FiltroBuscaVeiculoStrategy;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -62,7 +62,7 @@ public class VeiculoServiceImpl implements VeiculoService {
   @Override
   public void atualizarVeiculo(Long id, NovoVeiculoDto novoVeiculoDto) {
     var veiculoEntity = veiculoRepository.findById(id)
-            .orElseThrow(() -> new DadoNaoEncontrado(VEICULO_NAO_ENCONTRADO.getTexto()));
+            .orElseThrow(() -> new DadoNaoEncontradoException(VEICULO_NAO_ENCONTRADO.getTexto()));
 
     var marcaDto = marcaService.buscarPorId(novoVeiculoDto.marcaId());
 
@@ -78,7 +78,7 @@ public class VeiculoServiceImpl implements VeiculoService {
   @Override
   public void removerVeiculo(Long id) {
     var veiculoEntity = veiculoRepository.findById(id)
-            .orElseThrow(() -> new DadoNaoEncontrado(VEICULO_NAO_ENCONTRADO.getTexto()));
+            .orElseThrow(() -> new DadoNaoEncontradoException(VEICULO_NAO_ENCONTRADO.getTexto()));
 
     veiculoRepository.delete(veiculoEntity);
   }

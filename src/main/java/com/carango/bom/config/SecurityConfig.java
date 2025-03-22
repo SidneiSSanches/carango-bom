@@ -1,7 +1,7 @@
 
 package com.carango.bom.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,41 +21,40 @@ import org.springframework.web.cors.CorsConfigurationSource;
 
 import com.carango.bom.filter.JwtRequestFilter;
 
+@AllArgsConstructor
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-
-	@Autowired
 	private JwtRequestFilter jwtRequestFilter;
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-	    http
-	        .csrf(csrf -> csrf.disable())
-	        .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-	        .authorizeHttpRequests(authz -> authz
-	            .requestMatchers(
-	                "/swagger-ui/**", 
-	                "/v3/api-docs/**",
-	                "/swagger-resources/**", 
-	                "/webjars/**",// Libera o Swagger
-	                "/h2-console/**",// Libera acesso ao H2 Console
-	                "/authenticate/** "
-	            ).permitAll() 
-	            .requestMatchers("/h2-console/**").permitAll()
-	            .requestMatchers("/authenticate/**").permitAll() 
+		http
+						.csrf(AbstractHttpConfigurer::disable)
+						.cors(cors -> cors.configurationSource(corsConfigurationSource()))
+						.authorizeHttpRequests(authz -> authz
+										.requestMatchers(
+														"/swagger-ui/**",
+														"/v3/api-docs/**",
+														"/swagger-resources/**",
+														"/webjars/**",// Libera o Swagger
+														"/h2-console/**",// Libera acesso ao H2 Console
+														"/authenticate/** "
+										).permitAll()
+										.requestMatchers("/h2-console/**").permitAll()
+										.requestMatchers("/authenticate/**").permitAll()
 
-	            .anyRequest().authenticated()
-	        )
-	        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+										.anyRequest().authenticated()
+						)
+						.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
-	    http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
-	    
-	    return http.build();
+		http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+
+		return http.build();
 	}
 	@Bean
 	public AuthenticationManager authenticationManagerBean(AuthenticationConfiguration authenticationConfiguration)
-			throws Exception {
+					throws Exception {
 		return authenticationConfiguration.getAuthenticationManager();
 	}
 
@@ -65,7 +65,7 @@ public class SecurityConfig {
 
 	@Bean
 	public WebSecurityCustomizer webSecurityCustomizer() {
-		return (web) -> web.ignoring().requestMatchers("/ignore1", "/ignore2");
+		return web -> web.ignoring().requestMatchers("/ignore1", "/ignore2");
 	}
 
 	@Bean
@@ -78,5 +78,4 @@ public class SecurityConfig {
 		source.registerCorsConfiguration("/**", configuration);
 		return source;
 	}
-
 }

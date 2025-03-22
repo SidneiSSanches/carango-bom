@@ -76,6 +76,4 @@ public class MarcaController implements MarcaSwaggerController {
     public List<DashboardMarcaDto> consultaDashboardMarcas() {
         return DashboardMarcaDto.converter(marcaService.getSumarioMarcas());
     }
-    
-    
 }

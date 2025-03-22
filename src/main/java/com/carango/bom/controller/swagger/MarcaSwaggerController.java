@@ -27,16 +27,15 @@ public interface MarcaSwaggerController {
 
   @Operation(summary = "Cadastra Marca", description = "Funcionalidade de cadastro de uma marca",security = { @SecurityRequirement(name = "bearer-key") })
   ResponseEntity<Object> criarMarca(@Valid @RequestBody MarcaDto marcaDto);
+
   @Operation(summary = "Exclui Marca", description = "Funcionalidade de exclusão de uma marca cadastrada",security = { @SecurityRequirement(name = "bearer-key") })
-  
   ResponseEntity<Object> excluirMarca(@PathVariable Long id);
+
   @Operation(summary = "Atualiza Marca", description = "Funcionalidade de Atualização de uma marca cadastrada",security = { @SecurityRequirement(name = "bearer-key") })
- 
   ResponseEntity<Object> atualizarMarca(
           @PathVariable(name = "marca_id") Long marcaId,
           @RequestBody MarcaDto marcaDto);
+
   @Operation(summary="Dashboard de marcas",tags="Relatório",description="Funcionalidade de relatório das marcas",security = { @SecurityRequirement(name = "bearer-key") })
-
-
   List<DashboardMarcaDto> consultaDashboardMarcas();
 }

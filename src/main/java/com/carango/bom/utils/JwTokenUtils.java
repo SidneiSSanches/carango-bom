@@ -1,4 +1,3 @@
-
 package com.carango.bom.utils;
 
 import io.jsonwebtoken.Claims;
@@ -15,8 +14,7 @@ import java.util.Base64;
 
 @Component
 public class JwTokenUtils {
-
-	private final byte[] SECRET_KEY = Base64.getDecoder().decode("TU9ieW6hQk2q2SxHS8L/hQtBsew2r4Q5+DqSBoklPOo=");
+	private static final byte[] SECRET_KEY = Base64.getDecoder().decode("TU9ieW6hQk2q2SxHS8L/hQtBsew2r4Q5+DqSBoklPOo=");
 
 	public Date extractExpiration(String token) {
 		return extractClaim(token, Claims::getExpiration);
@@ -37,7 +35,7 @@ public class JwTokenUtils {
 
 	public String generateToken(UserDetails userDetails) {
 		return createToken(new HashMap<>(), userDetails.getUsername(),
-				new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)); // 10 hours
+						new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)); // 10 hours
 	}
 
 	public String generateToken(UserDetails userDetails, Date expiration) {
@@ -46,7 +44,7 @@ public class JwTokenUtils {
 
 	private String createToken(Map<String, Object> claims, String subject, Date expiration) {
 		return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
-				.setExpiration(expiration).signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
+						.setExpiration(expiration).signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
 	}
 
 	public Boolean validateToken(String token, UserDetails userDetails) {
