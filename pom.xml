@@ -12,7 +12,7 @@
 
 	<groupId>com.carango.bom</groupId>
 	<artifactId>carango-bom</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>carango-bom</name>
 	<description>gerenciamento de veículos</description>
 
@@ -101,7 +101,6 @@
 		    <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
 		    <version>${springdoc.version}</version>
 		</dependency>
-		
 	</dependencies>
 
 	<build>
@@ -114,5 +113,4 @@
             </plugins>
         </pluginManagement>
     </build>
-    
 </project>
