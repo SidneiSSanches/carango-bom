@@ -1,4 +1,3 @@
-
 package com.carango.bom.config;
 
 import lombok.AllArgsConstructor;
