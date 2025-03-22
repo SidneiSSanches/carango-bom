@@ -151,6 +151,26 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "dashboard",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/marcas/dashboard",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"marcas",
+										"dashboard"
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				},
@@ -199,56 +219,22 @@
 									"port": "8080",
 									"path": [
 										"veiculos"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "listar-veiculos-por-marcas",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "http://localhost:8080/veiculos/marcas/1",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "8080",
-									"path": [
-										"veiculos",
-										"marcas",
-										"1"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "listar-veiculos-por-faixa",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "http://localhost:8080/veiculos/faixas?valor_minimo=10000.00&valor_maximo=20000.00",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "8080",
-									"path": [
-										"veiculos",
-										"faixas"
 									],
 									"query": [
 										{
+											"key": "marca_id",
+											"value": "1",
+											"disabled": true
+										},
+										{
 											"key": "valor_minimo",
-											"value": "10000.00"
+											"value": "10000.00",
+											"disabled": true
 										},
 										{
 											"key": "valor_maximo",
-											"value": "20000.00"
+											"value": "20000.00",
+											"disabled": true
 										}
 									]
 								}
