@@ -16,7 +16,13 @@
 							"name": "criar-marca",
 							"request": {
 								"method": "POST",
-								"header": [],
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer TOKEN",
+										"type": "text"
+									}
+								],
 								"body": {
 									"mode": "raw",
 									"raw": "{\n    \"nome\": \"Fiat\"\n}",
@@ -47,7 +53,13 @@
 							},
 							"request": {
 								"method": "GET",
-								"header": [],
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer TOKEN",
+										"type": "text"
+									}
+								],
 								"body": {
 									"mode": "raw",
 									"raw": "{\n    \"nome\":\"Toyota\"\n}",
@@ -78,7 +90,12 @@
 							},
 							"request": {
 								"method": "GET",
-								"header": [],
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer TOKEN"
+									}
+								],
 								"body": {
 									"mode": "raw",
 									"raw": "{\n    \"nome\":\"Toyota\"\n}",
@@ -107,7 +124,12 @@
 							"name": "remover-marca",
 							"request": {
 								"method": "DELETE",
-								"header": [],
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer TOKEN"
+									}
+								],
 								"url": {
 									"raw": "http://localhost:8080/marcas/1",
 									"protocol": "http",
@@ -127,7 +149,13 @@
 							"name": "atualizar-marca",
 							"request": {
 								"method": "PUT",
-								"header": [],
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer TOKEN",
+										"type": "text"
+									}
+								],
 								"body": {
 									"mode": "raw",
 									"raw": "{\r\n    \"nome\": \"Toyota\"\r\n}",
@@ -156,7 +184,13 @@
 							"name": "dashboard",
 							"request": {
 								"method": "GET",
-								"header": [],
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer TOKEN",
+										"type": "text"
+									}
+								],
 								"url": {
 									"raw": "http://localhost:8080/marcas/dashboard",
 									"protocol": "http",
@@ -181,7 +215,13 @@
 							"name": "criar-veiculo",
 							"request": {
 								"method": "POST",
-								"header": [],
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer TOKEN",
+										"type": "text"
+									}
+								],
 								"body": {
 									"mode": "raw",
 									"raw": "{\r\n    \"marcaId\": 1,\r\n    \"modelo\": \"esportivo\",\r\n    \"ano\": 2025,\r\n    \"valor\": \"10000.00\"\r\n}",
@@ -209,7 +249,13 @@
 							"name": "listar-veiculos",
 							"request": {
 								"method": "GET",
-								"header": [],
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer TOKEN",
+										"type": "text"
+									}
+								],
 								"url": {
 									"raw": "http://localhost:8080/veiculos",
 									"protocol": "http",
@@ -245,7 +291,12 @@
 							"name": "remover-veiculo",
 							"request": {
 								"method": "DELETE",
-								"header": [],
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer TOKEN"
+									}
+								],
 								"url": {
 									"raw": "http://localhost:8080/veiculos/1",
 									"protocol": "http",
@@ -265,7 +316,13 @@
 							"name": "atualizar-veiculo",
 							"request": {
 								"method": "PUT",
-								"header": [],
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer TOKEN",
+										"type": "text"
+									}
+								],
 								"body": {
 									"mode": "raw",
 									"raw": "{\r\n    \"marcaId\": 2,\r\n    \"modelo\": \"sedan\",\r\n    \"ano\": 2025,\r\n    \"valor\": \"7000.00\"\r\n}",
@@ -293,13 +350,13 @@
 					]
 				},
 				{
-					"name": "Login",
+					"name": "login",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\":\"teste\",\n    \"password\":\"1\"\n}",
+							"raw": "{\n    \"username\":\"SEU USUARIO\",\n    \"password\":\"SUA SENHA\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -307,14 +364,14 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/login",
+							"raw": "http://localhost:8080/authenticate",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"login"
+								"authenticate"
 							]
 						}
 					},
