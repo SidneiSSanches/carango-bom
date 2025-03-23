@@ -29,13 +29,14 @@ public class SecurityConfig {
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		http.csrf(csrf -> csrf.disable()).cors(cors -> cors.configurationSource(corsConfigurationSource())) // Enable
-																											// CORS
-				.authorizeHttpRequests(
-						authz -> authz.requestMatchers("/authenticate").permitAll().anyRequest().authenticated())
-				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-		http.addFilterBefore(getJwtRequestFilter(), UsernamePasswordAuthenticationFilter.class);
-		return http.build();
+	    http.csrf(csrf -> csrf.disable())
+	        .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Enable CORS
+	        .authorizeHttpRequests(authz -> authz
+	            .requestMatchers("/authenticate", "/teste").permitAll() // Allow public access to /teste
+	            .anyRequest().authenticated())
+	        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+	    http.addFilterBefore(getJwtRequestFilter(), UsernamePasswordAuthenticationFilter.class);
+	    return http.build();
 	}
 
 	@Bean
