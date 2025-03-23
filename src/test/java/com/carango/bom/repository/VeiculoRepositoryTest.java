@@ -26,7 +26,6 @@ public class VeiculoRepositoryTest {
 	void testFindByMarca() {
 		// Arrange
 		MarcaEntity marca = new MarcaEntity();
-		marca.setId(1L);
 		marca.setNome("Toyota");
 
 		VeiculoEntity veiculo = new VeiculoEntity();

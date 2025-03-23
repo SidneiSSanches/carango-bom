@@ -17,8 +17,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Getter
-@Setter
 @Entity
 @Table(name = "marcas")
 @JsonRootName(value="Marcas")
