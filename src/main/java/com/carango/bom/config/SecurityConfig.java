@@ -32,7 +32,7 @@ public class SecurityConfig {
 	    http.csrf(csrf -> csrf.disable())
 	        .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Enable CORS
 	        .authorizeHttpRequests(authz -> authz
-	            .requestMatchers("/authenticate", "/teste").permitAll() // Allow public access to /teste
+	            .requestMatchers("/authenticate", "/veiculos").permitAll() // Allow public access to /teste
 	            .anyRequest().authenticated())
 	        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 	    http.addFilterBefore(getJwtRequestFilter(), UsernamePasswordAuthenticationFilter.class);
