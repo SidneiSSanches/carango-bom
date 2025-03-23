@@ -34,7 +34,7 @@ public class SecurityConfig {
 				.authorizeHttpRequests(
 						authz -> authz.requestMatchers("/authenticate").permitAll().anyRequest().authenticated())
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-		http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+		http.addFilterBefore(getJwtRequestFilter(), UsernamePasswordAuthenticationFilter.class);
 		return http.build();
 	}
 
@@ -65,4 +65,14 @@ public class SecurityConfig {
 		return source;
 	}
 
+	public JwtRequestFilter getJwtRequestFilter() {
+		return jwtRequestFilter;
+	}
+
+	public void setJwtRequestFilter(JwtRequestFilter jwtRequestFilter) {
+		this.jwtRequestFilter = jwtRequestFilter;
+	}
+
+	
+	
 }

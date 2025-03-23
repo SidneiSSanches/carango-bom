@@ -39,7 +39,7 @@ public class MarcaEntity {
     @OneToMany(mappedBy = "marca", cascade = CascadeType.ALL)
     private List<VeiculoEntity> veiculoEntity;
 
-    public @NotBlank(message = "O nome não pode ser vazio") @Size(min = 3, max = 255, message = "O nome deve ter no mínimo 3 caracteres") String getNome() {
+	public @NotBlank(message = "O nome não pode ser vazio") @Size(min = 3, max = 255, message = "O nome deve ter no mínimo 3 caracteres") String getNome() {
         return nome;
     }
 

@@ -1,18 +1,18 @@
 package com.carango.bom.service.impl;
 
-import com.carango.bom.dto.MarcaDto;
-import com.carango.bom.repository.marca.MarcaVeiculoRepository;
-import com.carango.bom.repository.marca.entity.MarcaEntity;
-import com.carango.bom.service.MarcaService;
-import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
-import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import com.carango.bom.dto.MarcaDto;
+import com.carango.bom.repository.marca.MarcaVeiculoRepository;
+import com.carango.bom.repository.marca.entity.MarcaEntity;
+import com.carango.bom.service.MarcaService;
+
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 @Service

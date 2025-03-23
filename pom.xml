@@ -37,12 +37,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 			<scope>runtime</scope>
@@ -75,19 +69,16 @@
 		<dependency>
 			<groupId>jakarta.validation</groupId>
 			<artifactId>jakarta.validation-api</artifactId>
-			<version>3.0.2</version>
 		</dependency>
   
 		<dependency>
 			<groupId>org.hibernate.validator</groupId>
 			<artifactId>hibernate-validator</artifactId>
-			<version>8.0.0.Final</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<version>1.18.36</version>
 			<scope>provided</scope>
 		</dependency>
 		
@@ -97,6 +88,34 @@
 		    <version>${springdoc.version}</version>
 		</dependency>
 		
+		 <!-- JUnit 5 dependency -->
+    <dependency>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-engine</artifactId>
+        <scope>test</scope>
+    </dependency>
+
+    <!-- Mockito dependency -->
+    <dependency>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-core</artifactId>
+        <scope>test</scope>
+    </dependency>
+
+    <!-- Mockito JUnit Jupiter dependency -->
+    <dependency>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-junit-jupiter</artifactId>
+        <scope>test</scope>
+    </dependency>	
+    
+    <dependency>
+    	<groupId>org.assertj</groupId>
+   	    <artifactId>assertj-core</artifactId>
+        <version>3.24.2</version>
+    <scope>test</scope>
+</dependency>
+
 	</dependencies>
 
 	<build>
