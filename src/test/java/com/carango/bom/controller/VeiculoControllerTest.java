@@ -1,6 +1,7 @@
 package com.carango.bom.controller;
 
 import com.carango.bom.dto.FiltroBuscaVeiculoDto;
+import com.carango.bom.dto.MarcaDto;
 import com.carango.bom.dto.NovoVeiculoDto;
 
 import com.carango.bom.dto.VeiculoDto;
@@ -76,7 +77,10 @@ public class VeiculoControllerTest {
 
     @Test
     void criarVeiculo() {
-        NovoVeiculoDto novoVeiculoDto = mock(NovoVeiculoDto.class);
+        var marca = new MarcaDto(1L, "Toyota");
+        NovoVeiculoDto novoVeiculoDto = new NovoVeiculoDto(1L, "Corolla", 2023, new BigDecimal("100000"));
+        VeiculoDto veiculoDto = new VeiculoDto(1L, marca, "Corolla", 2023, new BigDecimal("100000"));
+        when(veiculoService.criarVeiculo(any(NovoVeiculoDto.class))).thenReturn(veiculoDto);
         ResponseEntity<Object> resposta = veiculoController.criarVeiculo(novoVeiculoDto);
         assertEquals(201, resposta.getStatusCodeValue());
     }

@@ -1,6 +1,9 @@
 package com.carango.bom.service.impl;
 
+import static com.carango.bom.utils.ConverteEntityParaDtoUtils.paraVeiculoDto;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -11,6 +14,7 @@ import java.util.Optional;
 import com.carango.bom.dto.FiltroBuscaVeiculoDto;
 import com.carango.bom.dto.MarcaDto;
 import com.carango.bom.dto.VeiculoDto;
+import com.carango.bom.service.strategy.veiculo.FiltroBuscaVeiculoStrategy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -44,6 +48,8 @@ public class VeiculoServiceImplTest {
 	private MarcaDto marcaDto;
 	private NovoVeiculoDto novoVeiculoDto;
 	private VeiculoDto veiculoDto;
+	private List<FiltroBuscaVeiculoStrategy> filtroBuscaVeiculoStrategyList;
+
 
 	@BeforeEach
 	void setUp() {
@@ -59,15 +65,15 @@ public class VeiculoServiceImplTest {
 	@Test
 	void testListarVeiculos() {
 		Pageable paginacao = PageRequest.of(0, 10);
-		Page<VeiculoEntity> page = new PageImpl<>(List.of(veiculoEntity));
-		FiltroBuscaVeiculoDto filtroBuscaVeiculoDto = mock(FiltroBuscaVeiculoDto.class);
+		FiltroBuscaVeiculoDto filtro = new FiltroBuscaVeiculoDto(1L,new BigDecimal("1"),new BigDecimal(10000));
+		Page<VeiculoDto> veiculosPaginados = new PageImpl<>(List.of(paraVeiculoDto(veiculoEntity)));
 
-		when(veiculoRepository.findAll(paginacao)).thenReturn(page);
+		when(filtroBuscaVeiculoStrategyList.get(0).filtrar(paginacao, filtro)).thenReturn(veiculosPaginados);
 
-		var result = veiculoService.listarVeiculos(paginacao, filtroBuscaVeiculoDto);
+		Page<VeiculoDto> resultado = veiculoService.listarVeiculos(paginacao, filtro);
 
-		assertThat(result).isNotEmpty();
-		assertThat(result.getContent()).contains(veiculoDto);
+		assertNotNull(resultado);
+		assertEquals(1, resultado.getContent().size());
 	}
 
 	@Test
@@ -94,11 +100,11 @@ public class VeiculoServiceImplTest {
 
 	@Test
 	void testCriarVeiculo() {
-		when(marcaServiceImpl.buscarPorId(1L)).thenReturn(marcaDto);
-
-		veiculoService.criarVeiculo(novoVeiculoDto);
-
-		verify(veiculoRepository, times(1)).save(any(VeiculoEntity.class));
+		when(marcaServiceImpl.buscarPorId(novoVeiculoDto.marcaId())).thenReturn(marcaDto);
+		when(veiculoRepository.save(any(VeiculoEntity.class))).thenReturn(veiculoEntity);
+		VeiculoDto veiculoCriado = veiculoService.criarVeiculo(novoVeiculoDto);
+		assertNotNull(veiculoCriado);
+		assertEquals("Corolla", veiculoCriado.modelo());
 	}
 
 	@Test
