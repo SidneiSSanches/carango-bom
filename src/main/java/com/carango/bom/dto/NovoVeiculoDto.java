@@ -8,13 +8,15 @@ import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 public record NovoVeiculoDto(
         @Schema(description="Campo de id marca" ,example= "99999",requiredMode = RequiredMode.REQUIRED)
+        @NotNull(message = "O ID da marca não pode estar nulo.")
         Long marcaId,
         @Schema(description="Campo de modelo" ,example= "Song-Pro",requiredMode = RequiredMode.REQUIRED)
         @NotBlank(message = "O nome não pode ser vazio")
-        @Size(min = 2, max = 255, message = "O nome deve ter no mínimo 2 caracteres")
+        @Size(min = 3, max = 255, message = "O nome deve ter no mínimo 3 ")
         String modelo,
         @Schema(description="Campo de ano" ,example= "2025",requiredMode = RequiredMode.REQUIRED)
         @Positive(message = "O ano deve ser um número positivo.")

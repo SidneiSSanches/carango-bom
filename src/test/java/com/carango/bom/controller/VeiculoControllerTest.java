@@ -1,101 +1,108 @@
 package com.carango.bom.controller;
 
+import com.carango.bom.dto.FiltroBuscaVeiculoDto;
 import com.carango.bom.dto.NovoVeiculoDto;
+
 import com.carango.bom.dto.VeiculoDto;
 import com.carango.bom.service.VeiculoService;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.json.AutoConfigureJsonTesters;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.json.JacksonTester;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.web.servlet.MockMvc;
+import jakarta.persistence.EntityNotFoundException;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 
 import java.math.BigDecimal;
-import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
-@SpringBootTest
-@AutoConfigureMockMvc
-@AutoConfigureJsonTesters
-class VeiculoControllerTest {
+@ExtendWith(MockitoExtension.class)
+public class VeiculoControllerTest {
 
-    @Autowired
-    private MockMvc mvc;
-
-    @Autowired
-    private JacksonTester<NovoVeiculoDto> novoVeiculoJson;
-
-    @Autowired
-    private JacksonTester<List<VeiculoDto>> veiculoListaJson;
-
-    @MockBean
+    @Mock
     private VeiculoService veiculoService;
 
-    @Test
-    @DisplayName("Deveria devolver codigo HTTP 200 ao listar veiculos")
-    @WithMockUser
-    void listarVeiculos() throws Exception {
-        var response = mvc.perform(get("/veiculos"))
-                .andReturn().getResponse();
+    @InjectMocks
+    private VeiculoController veiculoController;
 
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
+
+    public static final Long ID_MARCA = 1L;
+    public static final Long ID_VEICULO = 1L;
+
+    @Test
+    void listarVeiculos() {
+        Pageable paginacao = Pageable.unpaged();
+        Page<VeiculoDto> veiculos = mock(Page.class);
+        when(veiculoService.listarVeiculos(any(Pageable.class), any(FiltroBuscaVeiculoDto.class))).thenReturn(veiculos);
+
+        var resultado = veiculoController.listarVeiculos(paginacao, null, null, null);
+
+        assertNotNull(resultado);
     }
 
     @Test
-    @DisplayName("Deveria devolver código HTTP 201 ao criar um veículo")
-    @WithMockUser
-    void criarVeiculo() throws Exception {
-        // Cria um NovoVeiculoDto para simular o corpo da requisição
-        var novoVeiculoDto = new NovoVeiculoDto(1L, "Modelo", 2022, BigDecimal.valueOf(40000));
+    void listarPorMarca() {
+        Pageable paginacao = Pageable.unpaged();
+        Page<VeiculoDto> veiculos = mock(Page.class);
+        when(veiculoService.listarVeiculos(any(Pageable.class), any(FiltroBuscaVeiculoDto.class))).thenReturn(veiculos);
 
-        // Cria um VeiculoDto para simular o retorno do serviço
-        var veiculoDto = new VeiculoDto(1L, null, "Modelo", 2022, BigDecimal.valueOf(40000));
+        var resultado = veiculoController.listarVeiculos(paginacao, ID_MARCA, null, null);
 
-        // Configura o mock do veiculoService para retornar o VeiculoDto
-        when(veiculoService.criarVeiculo(any(NovoVeiculoDto.class))).thenReturn(veiculoDto);
-
-        // Executa a requisição POST e verifica a resposta
-        var response = mvc.perform(post("/veiculos")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(novoVeiculoJson.write(novoVeiculoDto).getJson()))
-                .andReturn().getResponse();
-
-        // Verifica se o status da resposta é HTTP 201 (CREATED)
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
-    }
-    
-    
-    @Test
-    @DisplayName("Deveria devolver codigo HTTP 200 ao atualizar um veiculo")
-    @WithMockUser
-    void atualizarVeiculo() throws Exception {
-        var novoVeiculoDto = new NovoVeiculoDto(9L,"Modelo Novo", 2023, BigDecimal.valueOf(50000));
-
-        var response = mvc.perform(put("/veiculos/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(novoVeiculoJson.write(novoVeiculoDto).getJson()))
-                .andReturn().getResponse();
-
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertNotNull(resultado);
     }
 
     @Test
-    @DisplayName("Deveria devolver codigo HTTP 204 ao remover um veiculo")
-    @WithMockUser
-    void removerVeiculo() throws Exception {
-        var response = mvc.perform(delete("/veiculos/1"))
-                .andReturn().getResponse();
+    void listarPorFaixaDePreco() {
+        BigDecimal valorMinimo = BigDecimal.valueOf(5000);
+        BigDecimal valorMaximo = BigDecimal.valueOf(20000);
+        Pageable paginacao = Pageable.unpaged();
+        Page<VeiculoDto> veiculos = mock(Page.class);
+        when(veiculoService.listarVeiculos(any(Pageable.class), any(FiltroBuscaVeiculoDto.class))).thenReturn(veiculos);
 
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.NO_CONTENT.value());
+        var resultado = veiculoController.listarVeiculos(paginacao, null, valorMinimo, valorMaximo);
+
+        assertNotNull(resultado);
+    }
+
+    @Test
+    void criarVeiculo() {
+        NovoVeiculoDto novoVeiculoDto = mock(NovoVeiculoDto.class);
+        ResponseEntity<Object> resposta = veiculoController.criarVeiculo(novoVeiculoDto);
+        assertEquals(201, resposta.getStatusCodeValue());
+    }
+
+    @Test
+    void atualizarVeiculo() {
+        NovoVeiculoDto novoVeiculoDto = mock(NovoVeiculoDto.class);
+        ResponseEntity<Object> resposta = veiculoController.atualizarVeiculo(ID_VEICULO, novoVeiculoDto);
+        assertEquals(200, resposta.getStatusCodeValue());
+    }
+
+    @Test
+    void removerVeiculo() {
+        ResponseEntity<Object> resposta = veiculoController.removerVeiculo(ID_VEICULO);
+        assertEquals(204, resposta.getStatusCodeValue());
+    }
+
+    @Test
+    void removerVeiculo_DeveLancarExceptionQuandoVeiculoNaoExistir() {
+        Long veiculoIdInexistente = 99L;
+        doThrow(new EntityNotFoundException("Veículo não encontrado")).when(veiculoService).removerVeiculo(veiculoIdInexistente);
+
+        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> {
+            veiculoController.removerVeiculo(veiculoIdInexistente);
+        });
+
+        assertEquals("Veículo não encontrado", exception.getMessage());
     }
 }

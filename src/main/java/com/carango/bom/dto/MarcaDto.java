@@ -10,8 +10,8 @@ import jakarta.validation.constraints.NotBlank;
 public record MarcaDto(
         @Schema(description="Campo id" ,example= "9999",requiredMode = RequiredMode.REQUIRED)
         Long id,
-        @NotBlank(message = "O nome da marca não pode estar vazio.")
-        @Size(min = 3, max = 50, message = "O nome da marca deve ter entre 3 e 50 caracteres.")
         @Schema(description="Campo de nome" ,example= "BYD",requiredMode = RequiredMode.REQUIRED)
+        @Size(min = 3, max = 50, message = "O nome da marca deve ter entre 3 e 50 caracteres.")
+        @NotBlank(message = "O nome da marca não pode estar vazio.")
         String nome
 ) {}

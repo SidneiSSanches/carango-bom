@@ -35,3 +35,5 @@ target/
 
 # Spring Tool Suite
 .springBeans/
+
+*.DS_Store

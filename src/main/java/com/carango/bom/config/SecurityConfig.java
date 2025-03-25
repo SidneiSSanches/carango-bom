@@ -1,6 +1,9 @@
 package com.carango.bom.config;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,6 +25,9 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import com.carango.bom.filter.JwtRequestFilter;
 
 @AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -29,8 +35,7 @@ public class SecurityConfig {
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		http
-						.csrf(AbstractHttpConfigurer::disable)
+		http.csrf(AbstractHttpConfigurer::disable)
 						.headers(httpSecurityHeadersConfigurer -> httpSecurityHeadersConfigurer.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
 						.cors(cors -> cors.configurationSource(corsConfigurationSource()))
 						.authorizeHttpRequests(authz -> authz
@@ -40,11 +45,9 @@ public class SecurityConfig {
 														"/swagger-resources/**",
 														"/webjars/**",// Libera o Swagger
 														"/h2-console/**",// Libera acesso ao H2 Console
-														"/authenticate/** "
+														"/authenticate/** ",
+														"/authenticate", "/veiculos"
 										).permitAll()
-										.requestMatchers("/h2-console/**").permitAll()
-										.requestMatchers("/authenticate/**").permitAll()
-
 										.anyRequest().authenticated()
 						)
 						.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));

@@ -1,0 +1,17 @@
+/Users/sidneisanches/Documents/Alura2/carango-bom/src/test/java/com/carango/bom/CarangoBomApplicationTests.java
+/Users/sidneisanches/Documents/Alura2/carango-bom/src/test/java/com/carango/bom/config/SecurityConfigTest.java
+/Users/sidneisanches/Documents/Alura2/carango-bom/src/test/java/com/carango/bom/controller/AuthenticationControllerTest.java
+/Users/sidneisanches/Documents/Alura2/carango-bom/src/test/java/com/carango/bom/controller/MarcaControllerTest.java
+/Users/sidneisanches/Documents/Alura2/carango-bom/src/test/java/com/carango/bom/controller/VeiculoControllerTest.java
+/Users/sidneisanches/Documents/Alura2/carango-bom/src/test/java/com/carango/bom/entity/MarcaEntityTest.java
+/Users/sidneisanches/Documents/Alura2/carango-bom/src/test/java/com/carango/bom/entity/UserEntityTest.java
+/Users/sidneisanches/Documents/Alura2/carango-bom/src/test/java/com/carango/bom/filter/JwtRequestFilterTest.java
+/Users/sidneisanches/Documents/Alura2/carango-bom/src/test/java/com/carango/bom/repository/MarcaVeiculoRepositoryTest.java
+/Users/sidneisanches/Documents/Alura2/carango-bom/src/test/java/com/carango/bom/repository/UserRepositoryTest.java
+/Users/sidneisanches/Documents/Alura2/carango-bom/src/test/java/com/carango/bom/repository/VeiculoRepositoryTest.java
+/Users/sidneisanches/Documents/Alura2/carango-bom/src/test/java/com/carango/bom/secret/PasswordEncoderTest.java
+/Users/sidneisanches/Documents/Alura2/carango-bom/src/test/java/com/carango/bom/secret/SecretKeyGeneratorTest.java
+/Users/sidneisanches/Documents/Alura2/carango-bom/src/test/java/com/carango/bom/service/impl/MarcaServiceImplTest.java
+/Users/sidneisanches/Documents/Alura2/carango-bom/src/test/java/com/carango/bom/service/impl/UserServiceImplTest.java
+/Users/sidneisanches/Documents/Alura2/carango-bom/src/test/java/com/carango/bom/service/impl/VeiculoServiceImplTest.java
+/Users/sidneisanches/Documents/Alura2/carango-bom/src/test/java/com/carango/bom/util/JwtUtilTest.java

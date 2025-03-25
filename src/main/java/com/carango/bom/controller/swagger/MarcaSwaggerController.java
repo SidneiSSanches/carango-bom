@@ -35,7 +35,5 @@ public interface MarcaSwaggerController {
   ResponseEntity<Object> atualizarMarca(
           @PathVariable(name = "marca_id") Long marcaId,
           @RequestBody MarcaDto marcaDto);
-
-  @Operation(summary="Dashboard de marcas",tags="Relatório",description="Funcionalidade de relatório das marcas",security = { @SecurityRequirement(name = "bearer-key") })
   List<DashboardMarcaDto> consultaDashboardMarcas();
 }

@@ -1,112 +1,106 @@
 package com.carango.bom.controller;
 
 import com.carango.bom.dto.MarcaDto;
-import com.carango.bom.service.impl.MarcaServiceImpl;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.json.AutoConfigureJsonTesters;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.json.JacksonTester;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.web.servlet.MockMvc;
 
-import java.net.URI;
+import com.carango.bom.service.impl.MarcaServiceImpl;
+import jakarta.persistence.EntityNotFoundException;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
+
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
-@SpringBootTest
-@AutoConfigureMockMvc
-@AutoConfigureJsonTesters
-class MarcaControllerTest {
+@ExtendWith(MockitoExtension.class)
+public class MarcaControllerTest {
 
-    @Autowired
-    private MockMvc mvc;
+    @Mock
+    private MarcaServiceImpl service;
 
-    @Autowired
-    private JacksonTester<MarcaDto> marcaDtoJson;
+    @InjectMocks
+    private MarcaController marcaController;
 
-    @MockBean
-    private MarcaServiceImpl marcaService;
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
+
+    public static final Long ID_MARCA = 1L;
 
     @Test
-    @DisplayName("Deveria devolver codigo http 200 ao listar todas as marcas")
-    @WithMockUser
-    void listarTodas() throws Exception {
-        var response = mvc.perform(get("/marcas"))
-                .andReturn().getResponse();
+    void listarTodasAsMarcas() {
+        var marca1 = new MarcaDto(1L, "Toyota");
+        var marca2 = new MarcaDto(2L, "Ford");
 
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        Pageable pageable = PageRequest.of(0, 10);
+        List<MarcaDto> marcas = List.of(marca1, marca2);
+        Page<MarcaDto> page = new PageImpl<>(marcas, pageable, marcas.size());
+        when(service.listarTodas(pageable)).thenReturn(page);
+
+        var resultado = marcaController.listarTodas(pageable);
+
+        assertNotNull(resultado);
+        assertEquals(2, resultado.getTotalElements());
+        assertEquals("Toyota", resultado.getContent().get(0).nome());
     }
 
     @Test
-    @DisplayName("Deveria devolver codigo http 200 ao buscar marca por ID")
-    @WithMockUser
-    void buscarPorId() throws Exception {
-        var marcaDto = new MarcaDto(1L, "Marca Teste");
-        when(marcaService.buscarPorId(1L)).thenReturn(marcaDto);
+    void buscarIdMarca() {
+        var marca = new MarcaDto(1L, "Toyota");
 
-        var response = mvc.perform(get("/marcas/1"))
-                .andReturn().getResponse();
+        when(service.buscarPorId(ID_MARCA)).thenReturn(marca);
 
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        assertThat(response.getContentAsString()).contains("Marca Teste");
+        ResponseEntity<MarcaDto> resposta = marcaController.buscarPorId(ID_MARCA);
+        assertNotNull(resposta);
+        assertEquals(200, resposta.getStatusCodeValue());
+        assertEquals("Toyota", resposta.getBody().nome());
+
+        verify(service, times(1)).buscarPorId(ID_MARCA);
     }
 
     @Test
-    @DisplayName("Deveria devolver codigo http 201 ao criar uma nova marca")
-    @WithMockUser
-    void criarMarca() throws Exception {
-        var marcaDto = new MarcaDto(null, "Nova Marca");
-        when(marcaService.criarMarca(any())).thenReturn(new MarcaDto(1L, "Nova Marca"));
+    void buscarIdNaoExistente() {
+        Long idInexistente = 99L;
+        when(service.buscarPorId(idInexistente)).thenThrow(new EntityNotFoundException("MarcaVeiculo com ID " + idInexistente + " não foi encontrada."));
 
-        var response = mvc.perform(post("/marcas")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(marcaDtoJson.write(marcaDto).getJson()))
-                .andReturn().getResponse();
+        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> {
+            marcaController.buscarPorId(idInexistente);
+        });
 
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
+        assertEquals("MarcaVeiculo com ID 99 não foi encontrada.", exception.getMessage());
     }
 
     @Test
-    @DisplayName("Deveria devolver codigo http 204 ao excluir uma marca")
-    @WithMockUser
-    void excluirMarca() throws Exception {
-        var response = mvc.perform(delete("/marcas/1"))
-                .andReturn().getResponse();
-
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.NO_CONTENT.value());
+    void criarMarca() {
+        MarcaDto novaMarca = new MarcaDto(1L, "Honda");
+        ResponseEntity<Object> resposta = marcaController.criarMarca(novaMarca);
+        assertEquals(201, resposta.getStatusCodeValue());
     }
 
     @Test
-    @DisplayName("Deveria devolver codigo http 200 ao atualizar uma marca")
-    @WithMockUser
-    void atualizarMarca() throws Exception {
-        var marcaDto = new MarcaDto(1L, "Marca Atualizada");
-        Mockito.doNothing().when(marcaService).atualizarMarca(Mockito.anyLong(), Mockito.any());
-
-        var response = mvc.perform(put("/marcas/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(marcaDtoJson.write(marcaDto).getJson()))
-                .andReturn().getResponse();
-
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+    void excluirSucesso() {
+        marcaController.excluirMarca(ID_MARCA);
+        verify(service, times(1)).excluir(ID_MARCA);
     }
 
     @Test
-    @DisplayName("Deveria devolver codigo http 200 ao consultar o dashboard de marcas")
-    @WithMockUser
-    void consultaDashboardMarcas() throws Exception {
-    //TODO
+    void atualizarMarca() {
+        MarcaDto marcaAtualizada = new MarcaDto(1L, "Honda Atualizada");
+        doNothing().when(service).atualizarMarca(anyLong(), any(MarcaDto.class));
+
+        var resposta = marcaController.atualizarMarca(ID_MARCA, marcaAtualizada);
+
+        assertEquals(200, resposta.getStatusCodeValue());
     }
 }
