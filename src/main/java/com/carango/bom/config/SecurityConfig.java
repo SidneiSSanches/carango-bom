@@ -2,9 +2,7 @@ package com.carango.bom.config;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -45,8 +43,9 @@ public class SecurityConfig {
 														"/swagger-resources/**",
 														"/webjars/**",// Libera o Swagger
 														"/h2-console/**",// Libera acesso ao H2 Console
-														"/authenticate/** ",
-														"/authenticate", "/veiculos"
+														"/usuarios/** ",
+														"/usuarios",
+														"/veiculos"
 										).permitAll()
 										.anyRequest().authenticated()
 						)

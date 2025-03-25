@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.carango.bom.dto.AuthenticationRequestDto;
+import com.carango.bom.dto.LoginDto;
 
 
 public class PasswordEncoderTest {
@@ -22,20 +22,20 @@ public class PasswordEncoderTest {
     @Test
     public void testPasswordEncoding() {
     	
-    	List<AuthenticationRequestDto> authenticationRequestDtos = new ArrayList<AuthenticationRequestDto>();
-    	authenticationRequestDtos.add(new AuthenticationRequestDto("AlanPaiva" , "AlanPaiva@123456"));
-    	authenticationRequestDtos.add(new AuthenticationRequestDto("SamuelS"   , "SamuelS@123456"));
-    	authenticationRequestDtos.add(new AuthenticationRequestDto("SidneiS"   , "SidneiS@123456"));
-    	authenticationRequestDtos.add(new AuthenticationRequestDto("ThiagoH"   , "ThiagoH@123456"));
-    	authenticationRequestDtos.add(new AuthenticationRequestDto("TiagoG"    , "TiagoG@123456"));
-    	authenticationRequestDtos.add(new AuthenticationRequestDto("WiliamN"   , "WiliamN@123456"));
+    	List<LoginDto> loginDtos = new ArrayList<LoginDto>();
+    	loginDtos.add(new LoginDto("AlanPaiva" , "AlanPaiva@123456"));
+    	loginDtos.add(new LoginDto("SamuelS"   , "SamuelS@123456"));
+    	loginDtos.add(new LoginDto("SidneiS"   , "SidneiS@123456"));
+    	loginDtos.add(new LoginDto("ThiagoH"   , "ThiagoH@123456"));
+    	loginDtos.add(new LoginDto("TiagoG"    , "TiagoG@123456"));
+    	loginDtos.add(new LoginDto("WiliamN"   , "WiliamN@123456"));
     	
-    	for (AuthenticationRequestDto authenticationRequestDto : authenticationRequestDtos) {
+    	for (LoginDto loginDto : loginDtos) {
     		
-    		String hashPassword = passwordEncoder.encode(authenticationRequestDto.getPassword());	
-    		assertTrue(passwordEncoder.matches(authenticationRequestDto.getPassword(), hashPassword));
+    		String hashPassword = passwordEncoder.encode(loginDto.getPassword());
+    		assertTrue(passwordEncoder.matches(loginDto.getPassword(), hashPassword));
     		
-    		System.out.println("User: " + authenticationRequestDto.getUsername());
+    		System.out.println("User: " + loginDto.getUsername());
     		System.out.println("Encoded Password: " + hashPassword);
 		}
     }

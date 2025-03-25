@@ -371,14 +371,39 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/authenticate",
+							"raw": "http://localhost:8080/usuarios",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"authenticate"
+								"usuarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "pegar-usuario",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/usuarios",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"usuarios"
 							]
 						}
 					},

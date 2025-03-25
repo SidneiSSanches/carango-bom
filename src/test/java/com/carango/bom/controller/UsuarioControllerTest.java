@@ -1,6 +1,6 @@
 package com.carango.bom.controller;
 
-import com.carango.bom.dto.AuthenticationRequestDto;
+import com.carango.bom.dto.LoginDto;
 import com.carango.bom.dto.JwtDto;
 import com.carango.bom.service.impl.UserServiceImpl;
 import com.carango.bom.utils.JwTokenUtils;
@@ -21,7 +21,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class AuthenticationControllerTest {
+public class UsuarioControllerTest {
 
     @Mock
     private AuthenticationManager authenticationManager;
@@ -33,14 +33,14 @@ public class AuthenticationControllerTest {
     private JwTokenUtils jwTokenUtil;
 
     @InjectMocks
-    private AuthenticationController authenticationController;
+    private UsuarioController usuarioController;
 
-    private AuthenticationRequestDto authenticationRequest;
+    private LoginDto authenticationRequest;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        authenticationRequest = new AuthenticationRequestDto("root", "password");
+        authenticationRequest = new LoginDto("root", "password");
     }
 
     @Test
@@ -54,7 +54,7 @@ public class AuthenticationControllerTest {
         String token = "mock-jwt-token";
         when(jwTokenUtil.generateToken(userDetails)).thenReturn(token);
 
-        ResponseEntity<?> responseEntity = authenticationController.createAuthenticationToken(authenticationRequest);
+        ResponseEntity<?> responseEntity = usuarioController.logar(authenticationRequest);
 
         assertEquals(200, responseEntity.getStatusCodeValue()); // HTTP Status 200 OK
         JwtDto jwtDto = (JwtDto) responseEntity.getBody();
@@ -69,7 +69,7 @@ public class AuthenticationControllerTest {
                 .authenticate(any(UsernamePasswordAuthenticationToken.class));
 
         Exception exception = assertThrows(RuntimeException.class, () -> {
-            authenticationController.createAuthenticationToken(authenticationRequest);
+            usuarioController.logar(authenticationRequest);
         });
 
         assertEquals("Authentication failed", exception.getMessage());
