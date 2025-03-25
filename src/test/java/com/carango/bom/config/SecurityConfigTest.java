@@ -7,6 +7,10 @@ import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -15,16 +19,17 @@ import org.springframework.web.cors.CorsConfigurationSource;
 
 import com.carango.bom.filter.JwtRequestFilter;
 
+@ExtendWith(MockitoExtension.class)
 public class SecurityConfigTest {
 
-    private SecurityConfig securityConfig;
+    @Mock
     private JwtRequestFilter jwtRequestFilter;
 
-    @BeforeEach
-    public void setUp() {
-        securityConfig = new SecurityConfig();
-        securityConfig.setJwtRequestFilter(jwtRequestFilter);
-    }
+    @Mock
+    private AuthenticationConfiguration authenticationConfiguration;
+
+    @InjectMocks
+    private SecurityConfig securityConfig;
 
     @Test
     public void testAuthenticationManagerBean() throws Exception {

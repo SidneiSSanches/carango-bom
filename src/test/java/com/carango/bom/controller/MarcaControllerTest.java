@@ -84,7 +84,10 @@ public class MarcaControllerTest {
     @Test
     void criarMarca() {
         MarcaDto novaMarca = new MarcaDto(1L, "Honda");
+        when(service.criarMarca(any(MarcaDto.class))).thenReturn(novaMarca);
         ResponseEntity<Object> resposta = marcaController.criarMarca(novaMarca);
+        assertNotNull(resposta);
+        assertEquals("/marcas/1", resposta.getHeaders().get("Location").get(0));
         assertEquals(201, resposta.getStatusCodeValue());
     }
 
