@@ -8,6 +8,7 @@ import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 
+import com.carango.bom.utils.JwTokenUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,7 +20,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.carango.bom.service.impl.UserServiceImpl;
-import com.carango.bom.util.JwTokenUtil;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -33,7 +33,7 @@ public class JwtRequestFilterTest {
     private UserServiceImpl userServiceImpl;
 
     @Mock
-    private JwTokenUtil jwtUtil;
+    private JwTokenUtils jwtUtil;
 
     @Mock
     private HttpServletRequest request;

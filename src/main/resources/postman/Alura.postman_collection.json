@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "fa4cc794-bdf1-4235-8e90-86d543c4a182",
+		"_postman_id": "81b9bdea-ecd8-468b-9d36-2e4ffa1da71d",
 		"name": "Alura",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "3332102"
+		"_exporter_id": "11174996"
 	},
 	"item": [
 		{
@@ -13,7 +13,7 @@
 					"name": "Marca",
 					"item": [
 						{
-							"name": "Cadastrar marca",
+							"name": "criar-marca",
 							"request": {
 								"method": "POST",
 								"header": [
@@ -25,7 +25,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"nome\":\"Honda\"\n}",
+									"raw": "{\n    \"nome\": \"Fiat\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -47,10 +47,7 @@
 							"response": []
 						},
 						{
-							"name": "Listar",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
+							"name": "listar-marcas",
 							"request": {
 								"method": "GET",
 								"header": [
@@ -60,17 +57,8 @@
 										"type": "text"
 									}
 								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"nome\":\"Toyota\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
 								"url": {
-									"raw": "http://localhost:8080/marcas?size=10&page=0",
+									"raw": "http://localhost:8080/marcas",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -78,23 +66,13 @@
 									"port": "8080",
 									"path": [
 										"marcas"
-									],
-									"query": [
-										{
-											"key": "size",
-											"value": "10"
-										},
-										{
-											"key": "page",
-											"value": "0"
-										}
 									]
 								}
 							},
 							"response": []
 						},
 						{
-							"name": "Detalhar",
+							"name": "procurar-marca",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
@@ -103,8 +81,7 @@
 								"header": [
 									{
 										"key": "Authorization",
-										"value": "Bearer {{auth_token}}",
-										"type": "text"
+										"value": "Bearer {{auth_token}}"
 									}
 								],
 								"body": {
@@ -132,7 +109,32 @@
 							"response": []
 						},
 						{
-							"name": "Atualizar",
+							"name": "remover-marca",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{auth_token}}"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/marcas/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"marcas",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "atualizar-marca",
 							"request": {
 								"method": "PUT",
 								"header": [
@@ -144,7 +146,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"nome\":\"GOL\"\n}",
+									"raw": "{\r\n    \"nome\": \"Toyota\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -165,6 +167,32 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "dashboard",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{auth_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/marcas/dashboard",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"marcas",
+										"dashboard"
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				},
@@ -172,7 +200,7 @@
 					"name": "Veiculo",
 					"item": [
 						{
-							"name": "Cadastrar veiculo",
+							"name": "criar-veiculo",
 							"request": {
 								"method": "POST",
 								"header": [
@@ -184,7 +212,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"idMarca\": \"1\",\n    \"modelo\": \"Gol\",\n    \"ano\": \"2001\",\n    \"valor\": \"1.1\"\n}",
+									"raw": "{\r\n    \"marcaId\": 1,\r\n    \"modelo\": \"esportivo\",\r\n    \"ano\": 2025,\r\n    \"valor\": \"10000.00\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -206,7 +234,74 @@
 							"response": []
 						},
 						{
-							"name": "Atualizacao",
+							"name": "listar-veiculos",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{auth_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/veiculos",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"veiculos"
+									],
+									"query": [
+										{
+											"key": "marca_id",
+											"value": "1",
+											"disabled": true
+										},
+										{
+											"key": "valor_minimo",
+											"value": "10000.00",
+											"disabled": true
+										},
+										{
+											"key": "valor_maximo",
+											"value": "20000.00",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "remover-veiculo",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{auth_token}}"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/veiculos/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"veiculos",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "atualizar-veiculo",
 							"request": {
 								"method": "PUT",
 								"header": [
@@ -218,7 +313,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"idMarca\": \"1\",\n    \"modelo\": \"GOLF\",\n    \"ano\": \"2001\",\n    \"valor\": \"1.1\"\n}",
+									"raw": "{\r\n    \"marcaId\": 2,\r\n    \"modelo\": \"sedan\",\r\n    \"ano\": 2025,\r\n    \"valor\": \"7000.00\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -239,295 +334,36 @@
 								}
 							},
 							"response": []
-						},
-						{
-							"name": "Deletar",
-							"request": {
-								"method": "DELETE",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Bearer {{auth_token}}",
-										"type": "text"
-									}
-								],
-								"url": {
-									"raw": "http://localhost:8080/veiculos/1",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "8080",
-									"path": [
-										"veiculos",
-										"1"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Listar",
-							"request": {
-								"auth": {
-									"type": "noauth"
-								},
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Bearer {{auth_token}}",
-										"type": "text"
-									}
-								],
-								"url": {
-									"raw": "http://localhost:8080/veiculos?size=10&page=0",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "8080",
-									"path": [
-										"veiculos"
-									],
-									"query": [
-										{
-											"key": "size",
-											"value": "10"
-										},
-										{
-											"key": "page",
-											"value": "0"
-										}
-									]
-								}
-							},
-							"response": [
-								{
-									"name": "Listar",
-									"originalRequest": {
-										"method": "GET",
-										"header": [
-											{
-												"key": "Authorization",
-												"value": "Bearer {{auth_token}}",
-												"type": "text"
-											}
-										],
-										"url": {
-											"raw": "http://localhost:8080/veiculos?size=10&page=0",
-											"protocol": "http",
-											"host": [
-												"localhost"
-											],
-											"port": "8080",
-											"path": [
-												"veiculos"
-											],
-											"query": [
-												{
-													"key": "size",
-													"value": "10"
-												},
-												{
-													"key": "page",
-													"value": "0"
-												}
-											]
-										}
-									},
-									"status": "OK",
-									"code": 200,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Vary",
-											"value": "Origin"
-										},
-										{
-											"key": "Vary",
-											"value": "Access-Control-Request-Method"
-										},
-										{
-											"key": "Vary",
-											"value": "Access-Control-Request-Headers"
-										},
-										{
-											"key": "X-Content-Type-Options",
-											"value": "nosniff"
-										},
-										{
-											"key": "X-XSS-Protection",
-											"value": "0"
-										},
-										{
-											"key": "Cache-Control",
-											"value": "no-cache, no-store, max-age=0, must-revalidate"
-										},
-										{
-											"key": "Pragma",
-											"value": "no-cache"
-										},
-										{
-											"key": "Expires",
-											"value": "0"
-										},
-										{
-											"key": "X-Frame-Options",
-											"value": "DENY"
-										},
-										{
-											"key": "Content-Type",
-											"value": "application/json"
-										},
-										{
-											"key": "Transfer-Encoding",
-											"value": "chunked"
-										},
-										{
-											"key": "Date",
-											"value": "Sun, 23 Mar 2025 15:56:31 GMT"
-										},
-										{
-											"key": "Keep-Alive",
-											"value": "timeout=60"
-										},
-										{
-											"key": "Connection",
-											"value": "keep-alive"
-										}
-									],
-									"cookie": [],
-									"body": "{\"content\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":[{\"id\":2,\"marca\":{\"id\":1,\"nome\":\"Toyota\",\"veiculoEntity\":]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}"
-								}
-							]
-						},
-						{
-							"name": "Listar por Marca",
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Bearer {{auth_token}}",
-										"type": "text"
-									}
-								],
-								"url": {
-									"raw": "http://localhost:8080/veiculos/marcas/1",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "8080",
-									"path": [
-										"veiculos",
-										"marcas",
-										"1"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Listar por Faixa de Preco",
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Bearer {{auth_token}}",
-										"type": "text"
-									}
-								],
-								"url": {
-									"raw": "http://localhost:8080/veiculos/faixas?valor_minimo=0.00&valor_maximo=2000.00",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "8080",
-									"path": [
-										"veiculos",
-										"faixas"
-									],
-									"query": [
-										{
-											"key": "valor_minimo",
-											"value": "0.00"
-										},
-										{
-											"key": "valor_maximo",
-											"value": "2000.00"
-										}
-									]
-								}
-							},
-							"response": []
 						}
 					]
 				},
 				{
-					"name": "Login",
-					"item": [
+					"name": "login",
+					"event": [
 						{
-							"name": "Login",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"var response = pm.response.json();",
-											"",
-											"if (response.jwt) {",
-											"    pm.globals.set(\"auth_token\", response.jwt);",
-											"    console.log(\"Token salvo:\", response.jwt);",
-											"} else {",
-											"    console.log(\"Token não encontrado na resposta.\");",
-											"}",
-											""
-										],
-										"type": "text/javascript",
-										"packages": {}
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"username\":\"SidneiS\",\n    \"password\":\"SidneiS@123456\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "http://localhost:8080/authenticate",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "8080",
-									"path": [
-										"authenticate"
-									]
-								}
-							},
-							"response": []
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = pm.response.json();\r",
+									"\r",
+									"if (response.jwt) {\r",
+									"    pm.globals.set(\"auth_token\", response.jwt);\r",
+									"    console.log(\"Token salvo:\", response.jwt);\r",
+									"} else {\r",
+									"    console.log(\"Token não encontrado na resposta.\");\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
 						}
-					]
-				},
-				{
-					"name": "Login",
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\":\"teste\",\n    \"password\":\"1\"\n}",
+							"raw": "{\n    \"username\":\"WiliamN\",\n    \"password\":\"WiliamN@123456\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -535,14 +371,14 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/login",
+							"raw": "http://localhost:8080/authenticate",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"login"
+								"authenticate"
 							]
 						}
 					},

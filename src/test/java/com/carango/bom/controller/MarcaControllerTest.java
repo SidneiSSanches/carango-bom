@@ -1,9 +1,8 @@
 package com.carango.bom.controller;
 
 import com.carango.bom.dto.MarcaDto;
-import com.carango.bom.repository.marca.entity.MarcaEntity;
+
 import com.carango.bom.service.impl.MarcaServiceImpl;
-import jakarta.persistence.Entity;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -41,26 +40,25 @@ public class MarcaControllerTest {
 
     @Test
     void listarTodasAsMarcas() {
-        MarcaEntity marca1 = new MarcaEntity();
-        marca1.setNome("Toyota");
-        MarcaEntity marca2 = new MarcaEntity();
-        marca2.setNome("Ford");
+        var marca1 = new MarcaDto(1L, "Toyota");
+        var marca2 = new MarcaDto(2L, "Ford");
+
         Pageable pageable = PageRequest.of(0, 10);
-        List<MarcaEntity> marcas = List.of(marca1, marca2);
-        Page<MarcaEntity> page = new PageImpl<>(marcas, pageable, marcas.size());
+        List<MarcaDto> marcas = List.of(marca1, marca2);
+        Page<MarcaDto> page = new PageImpl<>(marcas, pageable, marcas.size());
         when(service.listarTodas(pageable)).thenReturn(page);
 
-        Page<MarcaEntity> resultado = marcaController.listarTodas(pageable);
+        var resultado = marcaController.listarTodas(pageable);
 
         assertNotNull(resultado);
         assertEquals(2, resultado.getTotalElements());
-        assertEquals("Toyota", resultado.getContent().get(0).getNome());
+        assertEquals("Toyota", resultado.getContent().get(0).nome());
     }
 
     @Test
     void buscarIdMarca() {
-        MarcaEntity marca = new MarcaEntity();
-        marca.setNome("Toyota");
+        var marca = new MarcaDto(1L, "Toyota");
+
         when(service.buscarPorId(ID_MARCA)).thenReturn(marca);
 
         ResponseEntity<MarcaDto> resposta = marcaController.buscarPorId(ID_MARCA);
@@ -85,24 +83,23 @@ public class MarcaControllerTest {
 
     @Test
     void criarMarca() {
-        MarcaDto novaMarca = new MarcaDto("Honda");
+        MarcaDto novaMarca = new MarcaDto(1L, "Honda");
         ResponseEntity<Object> resposta = marcaController.criarMarca(novaMarca);
         assertEquals(201, resposta.getStatusCodeValue());
     }
 
     @Test
     void excluirSucesso() {
-        marcaController.excluir(ID_MARCA);
+        marcaController.excluirMarca(ID_MARCA);
         verify(service, times(1)).excluir(ID_MARCA);
     }
 
     @Test
     void atualizarMarca() {
-        MarcaDto marcaAtualizada = new MarcaDto("Honda Atualizada");
-        ResponseEntity expectedResponse = ResponseEntity.ok().build();
-        when(service.atualizarMarca(ID_MARCA, marcaAtualizada)).thenReturn(expectedResponse);
+        MarcaDto marcaAtualizada = new MarcaDto(1L, "Honda Atualizada");
+        doNothing().when(service).atualizarMarca(anyLong(), any(MarcaDto.class));
 
-        ResponseEntity resposta = marcaController.atualizarMarca(ID_MARCA, marcaAtualizada);
+        var resposta = marcaController.atualizarMarca(ID_MARCA, marcaAtualizada);
 
         assertEquals(200, resposta.getStatusCodeValue());
     }

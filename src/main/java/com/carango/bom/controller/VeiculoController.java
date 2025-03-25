@@ -1,11 +1,11 @@
 package com.carango.bom.controller;
 
+import com.carango.bom.controller.swagger.VeiculoSwaggerController;
+import com.carango.bom.dto.FiltroBuscaVeiculoDto;
 import com.carango.bom.dto.NovoVeiculoDto;
-import com.carango.bom.repository.marca.entity.MarcaEntity;
-import com.carango.bom.repository.veiculo.entity.VeiculoEntity;
+import com.carango.bom.dto.VeiculoDto;
 import com.carango.bom.service.VeiculoService;
 
-import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -16,47 +16,40 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.net.URI;
-import java.util.List;
 
 @AllArgsConstructor
 @RestController
 @RequestMapping("/veiculos")
-public class VeiculoController {
+public class VeiculoController implements VeiculoSwaggerController {
   private VeiculoService veiculoService;
 
   @GetMapping
-  @Operation(summary="Lista Veiculos",tags="Listagem",description="Funcionalidade de listagem dos veiculos cadastrados")
-  public Page<VeiculoEntity> listarVeiculos(@PageableDefault(size = 10) Pageable paginacao) {
-    return veiculoService.listarVeiculos(paginacao);
-  }
+  @Override
+  public Page<VeiculoDto> listarVeiculos(
+          @Valid
+          @PageableDefault(size = 10) Pageable paginacao,
+          @RequestParam(name = "marca_id", required = false) Long marcaId,
+          @RequestParam(name = "valor_minimo", required = false) BigDecimal valorMinimo,
+          @RequestParam(name = "valor_maximo", required = false) BigDecimal valorMaximo
+  ) {
+    var filtroBuscaDto = new FiltroBuscaVeiculoDto(
+            marcaId, valorMinimo, valorMaximo
+    );
 
-  @GetMapping("/marcas/{marca_id}")
-  @Operation(summary="Busca Veiculos por Marca",tags="Busca",description="Funcionalidade de listagem dos veiculos cadastrados por marca")
-  public ResponseEntity<List<VeiculoEntity>> listarPorMarca(@PathVariable(name = "marca_id") Long marcaId) {
-    return ResponseEntity.ok()
-            .body(veiculoService.listarPorMarca(marcaId));
-  }
-
-  @GetMapping("/faixas")
-  @Operation(summary="Lista Veiculos por faixa de preço",tags="Listagem",description="Funcionalidade de listagem dos veiculos cadastrados por faixa de preço")
-  public ResponseEntity<List<VeiculoEntity>> listarPorFaixa(@Valid
-          @RequestParam(name = "valor_minimo") BigDecimal valorMinimo,
-          @RequestParam(name = "valor_maximo") BigDecimal valorMaximo) {
-    return ResponseEntity.ok()
-            .body(veiculoService.listarPorFaixaValor(valorMinimo, valorMaximo));
+    return veiculoService.listarVeiculos(paginacao, filtroBuscaDto);
   }
 
   @PostMapping
-  @Operation(summary="Cadastro Veiculo",tags="Cadastro",description="Funcionalidade de cadastro de um Veiculo")
+  @Override
   public ResponseEntity<Object> criarVeiculo(@Valid @RequestBody NovoVeiculoDto novoVeiculoDto) {
-    veiculoService.criarVeiculo(novoVeiculoDto);
+    var veiculo = veiculoService.criarVeiculo(novoVeiculoDto);
 
-    return ResponseEntity.created(URI.create("/veiculos"))
+    return ResponseEntity.created( URI.create("/veiculos/" + veiculo.id()))
             .build();
   }
 
   @PutMapping("/{veiculo_id}")
-  @Operation(summary="Atualização Veiculo",tags="Atualização",description="Funcionalidade de Atualização de um Veiculo cadastrado")
+  @Override
   public ResponseEntity<Object> atualizarVeiculo(@Valid
           @PathVariable(name = "veiculo_id") Long veiculoId,
           @RequestBody NovoVeiculoDto novoVeiculoDto) {
@@ -67,7 +60,7 @@ public class VeiculoController {
   }
 
   @DeleteMapping("/{veiculo_id}")
-  @Operation(summary="Exclusão Veiculo",tags="Exclusão",description="Funcionalidade de exclusão de um Veiculo cadastrado")
+  @Override
   public ResponseEntity<Object> removerVeiculo(@Valid @PathVariable(name = "veiculo_id") Long veiculoId) {
     veiculoService.removerVeiculo(veiculoId);
 

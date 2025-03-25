@@ -70,6 +70,11 @@ Exemplo de Requisição:
      "password": "senha"
    }
 
+Exemplo de Requisição para Dev:
+   {
+     "username": "usuario",
+     "password": "usuario@senha"
+   }
 
 
 Exemplo de Resposta:

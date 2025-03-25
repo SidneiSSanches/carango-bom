@@ -1,11 +1,13 @@
 package com.carango.bom.controller;
 
+import com.carango.bom.dto.FiltroBuscaVeiculoDto;
 import com.carango.bom.dto.NovoVeiculoDto;
-import com.carango.bom.repository.veiculo.entity.VeiculoEntity;
+
+import com.carango.bom.dto.VeiculoDto;
 import com.carango.bom.service.VeiculoService;
+import org.junit.jupiter.api.Test;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -16,7 +18,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -41,36 +42,36 @@ public class VeiculoControllerTest {
     @Test
     void listarVeiculos() {
         Pageable paginacao = Pageable.unpaged();
-        Page<VeiculoEntity> veiculos = mock(Page.class);
-        when(veiculoService.listarVeiculos(paginacao)).thenReturn(veiculos);
+        Page<VeiculoDto> veiculos = mock(Page.class);
+        when(veiculoService.listarVeiculos(any(Pageable.class), any(FiltroBuscaVeiculoDto.class))).thenReturn(veiculos);
 
-        Page<VeiculoEntity> resultado = veiculoController.listarVeiculos(paginacao);
+        var resultado = veiculoController.listarVeiculos(paginacao, null, null, null);
 
         assertNotNull(resultado);
     }
 
     @Test
     void listarPorMarca() {
-        List<VeiculoEntity> veiculos = mock(List.class);
-        when(veiculoService.listarPorMarca(ID_MARCA)).thenReturn(veiculos);
+        Pageable paginacao = Pageable.unpaged();
+        Page<VeiculoDto> veiculos = mock(Page.class);
+        when(veiculoService.listarVeiculos(any(Pageable.class), any(FiltroBuscaVeiculoDto.class))).thenReturn(veiculos);
 
-        ResponseEntity<List<VeiculoEntity>> resposta = veiculoController.listarPorMarca(ID_MARCA);
+        var resultado = veiculoController.listarVeiculos(paginacao, ID_MARCA, null, null);
 
-        assertEquals(200, resposta.getStatusCodeValue());
-        assertNotNull(resposta.getBody());
+        assertNotNull(resultado);
     }
 
     @Test
     void listarPorFaixaDePreco() {
         BigDecimal valorMinimo = BigDecimal.valueOf(5000);
         BigDecimal valorMaximo = BigDecimal.valueOf(20000);
-        List<VeiculoEntity> veiculos = mock(List.class);
-        when(veiculoService.listarPorFaixaValor(valorMinimo, valorMaximo)).thenReturn(veiculos);
+        Pageable paginacao = Pageable.unpaged();
+        Page<VeiculoDto> veiculos = mock(Page.class);
+        when(veiculoService.listarVeiculos(any(Pageable.class), any(FiltroBuscaVeiculoDto.class))).thenReturn(veiculos);
 
-        ResponseEntity<List<VeiculoEntity>> resposta = veiculoController.listarPorFaixa(valorMinimo, valorMaximo);
+        var resultado = veiculoController.listarVeiculos(paginacao, null, valorMinimo, valorMaximo);
 
-        assertEquals(200, resposta.getStatusCodeValue());
-        assertNotNull(resposta.getBody());
+        assertNotNull(resultado);
     }
 
     @Test

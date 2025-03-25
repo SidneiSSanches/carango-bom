@@ -12,4 +12,5 @@ import java.util.List;
 public interface VeiculoRepository extends JpaRepository<VeiculoEntity, Long> {
   List<VeiculoEntity> findByMarca(MarcaEntity marca);
   List<VeiculoEntity> findAllByValorBetween(BigDecimal valorMinimo, BigDecimal valorMaximo);
+  List<VeiculoEntity> findAllByValorBetweenAndMarca(BigDecimal valorMinimo, BigDecimal valorMaximo, MarcaEntity marca);
 }

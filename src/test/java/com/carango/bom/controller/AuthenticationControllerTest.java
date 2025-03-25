@@ -3,7 +3,7 @@ package com.carango.bom.controller;
 import com.carango.bom.dto.AuthenticationRequestDto;
 import com.carango.bom.dto.JwtDto;
 import com.carango.bom.service.impl.UserServiceImpl;
-import com.carango.bom.util.JwTokenUtil;
+import com.carango.bom.utils.JwTokenUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,7 +30,7 @@ public class AuthenticationControllerTest {
     private UserServiceImpl userServiceImpl;
 
     @Mock
-    private JwTokenUtil jwTokenUtil;
+    private JwTokenUtils jwTokenUtil;
 
     @InjectMocks
     private AuthenticationController authenticationController;

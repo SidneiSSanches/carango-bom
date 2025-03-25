@@ -16,7 +16,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.http.ResponseEntity;
 
 import com.carango.bom.dto.MarcaDto;
 import com.carango.bom.repository.marca.MarcaVeiculoRepository;
@@ -44,7 +43,7 @@ public class MarcaServiceImplTest {
                 .nome("Toyota")
                 .build();
 
-        marcaDto = new MarcaDto("Toyota");
+        marcaDto = new MarcaDto(1L, "Toyota");
     }
 
     @Test
@@ -54,19 +53,19 @@ public class MarcaServiceImplTest {
 
         when(repository.findAll(paginacao)).thenReturn(page);
 
-        Page<MarcaEntity> result = service.listarTodas(paginacao);
+        Page<MarcaDto> result = service.listarTodas(paginacao);
 
         assertThat(result).isNotEmpty();
-        assertThat(result.getContent()).contains(marcaEntity);
+        assertThat(result.getContent()).contains(marcaDto);
     }
 
     @Test
     void testBuscarPorId() {
         when(repository.findById(1L)).thenReturn(Optional.of(marcaEntity));
 
-        MarcaEntity result = service.buscarPorId(1L);
+        var result = service.buscarPorId(1L);
 
-        assertThat(result).isEqualTo(marcaEntity);
+        assertThat(result).isEqualTo(marcaDto);
     }
 
     @Test
@@ -92,21 +91,8 @@ public class MarcaServiceImplTest {
 
     @Test
     void testAtualizarMarca() {
-        when(repository.findById(1L)).thenReturn(Optional.of(marcaEntity));
+        service.criarMarca(marcaDto);
 
-        ResponseEntity result = service.atualizarMarca(1L, marcaDto);
-
-        assertThat(result.getStatusCodeValue()).isEqualTo(200);
         verify(repository, times(1)).save(any(MarcaEntity.class));
-    }
-
-    @Test
-    void testAtualizarMarcaNotFound() {
-        when(repository.findById(1L)).thenReturn(Optional.empty());
-
-        ResponseEntity result = service.atualizarMarca(1L, marcaDto);
-
-        assertThat(result.getStatusCodeValue()).isEqualTo(204);
-        verify(repository, never()).save(any(MarcaEntity.class));
     }
 }

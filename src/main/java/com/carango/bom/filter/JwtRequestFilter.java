@@ -1,14 +1,14 @@
 package com.carango.bom.filter;
 
 import com.carango.bom.service.impl.UserServiceImpl;
-import com.carango.bom.util.JwTokenUtil;
+import com.carango.bom.utils.JwTokenUtils;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,14 +18,11 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+@AllArgsConstructor
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
-
-    @Autowired
     private UserServiceImpl userServiceImpl;
-
-    @Autowired
-    private JwTokenUtil jwtUtil;
+    private JwTokenUtils jwtUtil;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
@@ -53,7 +50,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                         .setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
             }
-        }    
+        }
         chain.doFilter(request, response);
     }
 }

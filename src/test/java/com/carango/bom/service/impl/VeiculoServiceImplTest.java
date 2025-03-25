@@ -2,14 +2,15 @@ package com.carango.bom.service.impl;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
+import com.carango.bom.dto.FiltroBuscaVeiculoDto;
+import com.carango.bom.dto.MarcaDto;
+import com.carango.bom.dto.VeiculoDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -40,14 +41,18 @@ public class VeiculoServiceImplTest {
 
 	private VeiculoEntity veiculoEntity;
 	private MarcaEntity marcaEntity;
+	private MarcaDto marcaDto;
 	private NovoVeiculoDto novoVeiculoDto;
+	private VeiculoDto veiculoDto;
 
 	@BeforeEach
 	void setUp() {
 		marcaEntity = MarcaEntity.builder().id(1L).nome("Toyota").build();
+		marcaDto = new MarcaDto(1L, "Toyota");
 		veiculoEntity = VeiculoEntity.builder().id(1L).marca(marcaEntity).modelo("Corolla").ano(2020)
 				.valor(new BigDecimal("20000")).build();
 		novoVeiculoDto = new NovoVeiculoDto(1L, "Corolla", 2020, new BigDecimal("20000"));
+		veiculoDto = new VeiculoDto(1L, new MarcaDto(1L , "Toyota"), "Corolla", 2020, new BigDecimal("20000"));
 	}
 
 	
@@ -55,41 +60,41 @@ public class VeiculoServiceImplTest {
 	void testListarVeiculos() {
 		Pageable paginacao = PageRequest.of(0, 10);
 		Page<VeiculoEntity> page = new PageImpl<>(List.of(veiculoEntity));
+		FiltroBuscaVeiculoDto filtroBuscaVeiculoDto = mock(FiltroBuscaVeiculoDto.class);
 
 		when(veiculoRepository.findAll(paginacao)).thenReturn(page);
 
-		Page<VeiculoEntity> result = veiculoService.listarVeiculos(paginacao);
+		var result = veiculoService.listarVeiculos(paginacao, filtroBuscaVeiculoDto);
 
 		assertThat(result).isNotEmpty();
-		assertThat(result.getContent()).contains(veiculoEntity);
+		assertThat(result.getContent()).contains(veiculoDto);
 	}
 
 	@Test
 	void testListarPorMarca() {
-		when(marcaServiceImpl.buscarPorId(1L)).thenReturn(marcaEntity);
+		when(marcaServiceImpl.buscarPorId(1L)).thenReturn(marcaDto);
 		when(veiculoRepository.findByMarca(marcaEntity)).thenReturn(List.of(veiculoEntity));
 
-		List<VeiculoEntity> result = veiculoService.listarPorMarca(1L);
+		var result = veiculoService.listarVeiculos(Pageable.unpaged(), new FiltroBuscaVeiculoDto(1L, null, null));
 
 		assertThat(result).isNotEmpty();
-		assertThat(result).contains(veiculoEntity);
+		assertThat(result).contains(veiculoDto);
 	}
 
 	@Test
 	void testListarPorFaixaValor() {
-		when(veiculoRepository.findAllByValorBetween(new BigDecimal("10000"), new BigDecimal("30000")))
-				.thenReturn(List.of(veiculoEntity));
+		when(marcaServiceImpl.buscarPorId(1L)).thenReturn(marcaDto);
+		when(veiculoRepository.findByMarca(marcaEntity)).thenReturn(List.of(veiculoEntity));
 
-		List<VeiculoEntity> result = veiculoService.listarPorFaixaValor(new BigDecimal("10000"),
-				new BigDecimal("30000"));
+		var result = veiculoService.listarVeiculos(Pageable.unpaged(), new FiltroBuscaVeiculoDto(null, new BigDecimal("20000"), new BigDecimal("20000")));
 
 		assertThat(result).isNotEmpty();
-		assertThat(result).contains(veiculoEntity);
+		assertThat(result).contains(veiculoDto);
 	}
 
 	@Test
 	void testCriarVeiculo() {
-		when(marcaServiceImpl.buscarPorId(1L)).thenReturn(marcaEntity);
+		when(marcaServiceImpl.buscarPorId(1L)).thenReturn(marcaDto);
 
 		veiculoService.criarVeiculo(novoVeiculoDto);
 
@@ -99,7 +104,7 @@ public class VeiculoServiceImplTest {
 	@Test
 	void testAtualizarVeiculo() {
 		when(veiculoRepository.findById(1L)).thenReturn(Optional.of(veiculoEntity));
-		when(marcaServiceImpl.buscarPorId(1L)).thenReturn(marcaEntity);
+		when(marcaServiceImpl.buscarPorId(1L)).thenReturn(marcaDto);
 
 		veiculoService.atualizarVeiculo(1L, novoVeiculoDto);
 
