@@ -26,7 +26,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(DadoNaoEncontradoException.class)
     public ResponseEntity<Map<String, String>> handleDadoNaoEncontradoException(DadoNaoEncontradoException ex) {
         Map<String, String> response = new HashMap<>();
-        response.put("mensagem", "Não foi possível localizar o dado solicitado.");
+        response.put("mensagem", ex.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 
