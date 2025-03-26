@@ -34,7 +34,7 @@ public class MarcaController implements MarcaSwaggerController {
 
     @GetMapping
     @Override
-    public Page<MarcaDto> listarTodas(@ParameterObject @PageableDefault(size = 10,page=0,sort="nome,desc") Pageable paginacao) {
+    public Page<MarcaDto> listarTodas(@ParameterObject @PageableDefault(size = 10,page=0) Pageable paginacao) {
         return marcaService.listarTodas(paginacao);
     }
     

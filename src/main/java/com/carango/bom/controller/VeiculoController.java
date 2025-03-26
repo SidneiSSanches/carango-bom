@@ -29,7 +29,7 @@ public class VeiculoController implements VeiculoSwaggerController {
   @Override
   public Page<VeiculoDto> listarVeiculos(
           @Valid
-          @ParameterObject @PageableDefault(size = 10,page=0,sort="marca,desc") Pageable paginacao,
+          @ParameterObject @PageableDefault(size = 10,page=0) Pageable paginacao,
           @RequestParam(name = "marca_id", required = false) Long marcaId,
           @RequestParam(name = "valor_minimo", required = false) BigDecimal valorMinimo,
           @RequestParam(name = "valor_maximo", required = false) BigDecimal valorMaximo
