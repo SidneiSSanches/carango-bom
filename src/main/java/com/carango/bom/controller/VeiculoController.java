@@ -8,6 +8,8 @@ import com.carango.bom.service.VeiculoService;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -27,7 +29,7 @@ public class VeiculoController implements VeiculoSwaggerController {
   @Override
   public Page<VeiculoDto> listarVeiculos(
           @Valid
-          @PageableDefault(size = 10) Pageable paginacao,
+          @ParameterObject @PageableDefault(size = 10,page=0,sort="marca,desc") Pageable paginacao,
           @RequestParam(name = "marca_id", required = false) Long marcaId,
           @RequestParam(name = "valor_minimo", required = false) BigDecimal valorMinimo,
           @RequestParam(name = "valor_maximo", required = false) BigDecimal valorMaximo

@@ -6,6 +6,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -18,10 +20,10 @@ import java.math.BigDecimal;
 
 @Tag(name = "CRUD de veículos", description = "Gerencia as operações de veículos")
 public interface VeiculoSwaggerController {
-  @Operation(summary = "Lista Veiculos", description = "Funcionalidade de listagem dos veiculos cadastrados")
+  @Operation(summary = "Lista Veiculos", description = "Funcionalidade de listagem dos veiculos cadastrados",security = { @SecurityRequirement(name = "bearer-key") })
   Page<VeiculoDto> listarVeiculos(
           @Valid
-          @PageableDefault(size = 10) Pageable paginacao,
+          @ParameterObject @PageableDefault(size = 10,page=0,sort="marca,desc") Pageable paginacao,
           @RequestParam(name = "marca_id", required = false) Long marcaId,
           @RequestParam(name = "valor_minimo", required = false) BigDecimal valorMinimo,
           @RequestParam(name = "valor_maximo", required = false) BigDecimal valorMaximo
