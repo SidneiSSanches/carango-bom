@@ -1,9 +1,17 @@
 package com.carango.bom.controller;
 
-import com.carango.bom.dto.MarcaDto;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-import com.carango.bom.service.impl.MarcaServiceImpl;
-import jakarta.persistence.EntityNotFoundException;
+import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,10 +25,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 
-import java.util.List;
+import com.carango.bom.dto.InclusaoMarcaDto;
+import com.carango.bom.dto.MarcaDto;
+import com.carango.bom.service.impl.MarcaServiceImpl;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import jakarta.persistence.EntityNotFoundException;
 
 @ExtendWith(MockitoExtension.class)
 public class MarcaControllerTest {
@@ -83,9 +92,9 @@ public class MarcaControllerTest {
 
     @Test
     void criarMarca() {
-        MarcaDto novaMarca = new MarcaDto(1L, "Honda");
-        when(service.criarMarca(any(MarcaDto.class))).thenReturn(novaMarca);
-        ResponseEntity<Object> resposta = marcaController.criarMarca(novaMarca);
+        InclusaoMarcaDto inclusaoMarcaDto = new InclusaoMarcaDto(1L, "Honda");
+        when(service.criarMarca(any(MarcaDto.class))).thenReturn(inclusaoMarcaDto.toMarcaDto(inclusaoMarcaDto));
+        ResponseEntity<Object> resposta = marcaController.criarMarca(inclusaoMarcaDto);
         assertNotNull(resposta);
         assertEquals("/marcas/1", resposta.getHeaders().get("Location").get(0));
         assertEquals(201, resposta.getStatusCodeValue());
@@ -99,10 +108,10 @@ public class MarcaControllerTest {
 
     @Test
     void atualizarMarca() {
-        MarcaDto marcaAtualizada = new MarcaDto(1L, "Honda Atualizada");
+    	InclusaoMarcaDto inclusaoMarcaDto = new InclusaoMarcaDto(1L, "Honda Atualizada");
         doNothing().when(service).atualizarMarca(anyLong(), any(MarcaDto.class));
 
-        var resposta = marcaController.atualizarMarca(ID_MARCA, marcaAtualizada);
+        var resposta = marcaController.atualizarMarca(ID_MARCA, inclusaoMarcaDto);
 
         assertEquals(200, resposta.getStatusCodeValue());
     }

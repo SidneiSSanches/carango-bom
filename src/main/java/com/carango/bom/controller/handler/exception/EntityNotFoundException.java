@@ -1,5 +1,5 @@
 
-package com.carango.bom.controller.exception;
+package com.carango.bom.controller.handler.exception;
 
 public class EntityNotFoundException extends RuntimeException {
 	

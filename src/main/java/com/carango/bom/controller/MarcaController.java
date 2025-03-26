@@ -3,6 +3,7 @@ package com.carango.bom.controller;
 import java.net.URI;
 import java.util.List;
 
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.carango.bom.controller.swagger.MarcaSwaggerController;
 import com.carango.bom.dto.DashboardMarcaDto;
+import com.carango.bom.dto.InclusaoMarcaDto;
 import com.carango.bom.dto.MarcaDto;
 import com.carango.bom.service.impl.MarcaServiceImpl;
 
@@ -32,9 +34,10 @@ public class MarcaController implements MarcaSwaggerController {
 
     @GetMapping
     @Override
-    public Page<MarcaDto> listarTodas(@PageableDefault(size = 10)  Pageable paginacao) {
+    public Page<MarcaDto> listarTodas(@ParameterObject @PageableDefault(size = 10,page=0,sort="nome,desc") Pageable paginacao) {
         return marcaService.listarTodas(paginacao);
     }
+    
 
     @GetMapping("/{id}")
     @Override
@@ -44,8 +47,8 @@ public class MarcaController implements MarcaSwaggerController {
 
     @PostMapping
     @Override
-    public ResponseEntity<Object> criarMarca(@Valid @RequestBody MarcaDto marcaDto) {
-        var marca = marcaService.criarMarca(marcaDto);
+    public ResponseEntity<Object> criarMarca(@Valid @RequestBody InclusaoMarcaDto inclusaoMarcaDto) {
+        var marca = marcaService.criarMarca(inclusaoMarcaDto.toMarcaDto(inclusaoMarcaDto));
 
         return ResponseEntity.created( URI.create("/marcas/" + marca.id()))
                 .build();
@@ -64,11 +67,11 @@ public class MarcaController implements MarcaSwaggerController {
     @Override
     public ResponseEntity<Object> atualizarMarca(
             @PathVariable(name = "marca_id") Long marcaId,
-            @RequestBody MarcaDto marcaDto) {
-        marcaService.atualizarMarca(marcaId, marcaDto);
+            @RequestBody InclusaoMarcaDto inclusaoMarcaDto) {
+        marcaService.atualizarMarca(marcaId, inclusaoMarcaDto.toMarcaDto(inclusaoMarcaDto));
 
         return ResponseEntity.ok()
-                .body(marcaDto);
+                .body(inclusaoMarcaDto);
     }
     
     @GetMapping("/dashboard")

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import com.carango.bom.dto.LoginDto;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.RequestHeader;
 
@@ -16,6 +17,6 @@ import org.springframework.web.bind.annotation.RequestHeader;
 public interface UsuarioSwaggerController {
 	@Operation(summary = "Login", description = "Funcionalidade de login")
 	ResponseEntity<JwtDto> logar(@Valid @RequestBody LoginDto authenticationRequest);
-	@Operation(summary = "Login", description = "Funcionalidade de login")
+	@Operation(summary = "Recupera dados usuário", description = "Funcionalidade de recuperação do usuário pelo Token",security = { @SecurityRequirement(name = "bearer-key") })
 	ResponseEntity<UsuarioDto> pegarDadosUsuario(@Valid @RequestHeader("Authorization") String token);
 }
