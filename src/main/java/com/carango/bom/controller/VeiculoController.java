@@ -54,7 +54,7 @@ public class VeiculoController implements VeiculoSwaggerController {
   @Override
   public ResponseEntity<Object> atualizarVeiculo(@Valid
           @PathVariable(name = "veiculo_id") Long veiculoId,
-          @RequestBody NovoVeiculoDto novoVeiculoDto) {
+          @Valid @RequestBody NovoVeiculoDto novoVeiculoDto) {
     veiculoService.atualizarVeiculo(veiculoId, novoVeiculoDto);
 
     return ResponseEntity.ok()
