@@ -2,12 +2,14 @@
 package com.carango.bom.service.impl;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import java.util.List;
 import java.util.Optional;
 
+import com.carango.bom.repository.marca.MarcaRepository;
+import com.carango.bom.service.exception.DadoNaoEncontradoException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -21,11 +23,13 @@ import com.carango.bom.dto.MarcaDto;
 import com.carango.bom.repository.marca.MarcaVeiculoRepository;
 import com.carango.bom.repository.marca.entity.MarcaEntity;
 
-import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 @ExtendWith(MockitoExtension.class)
 public class MarcaServiceImplTest {
+
+    @Mock
+    private MarcaRepository marcaRepository;
 
     @Mock
     private MarcaVeiculoRepository repository;
@@ -38,11 +42,7 @@ public class MarcaServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        marcaEntity = MarcaEntity.builder()
-                .id(1L)
-                .nome("Toyota")
-                .build();
-
+        marcaEntity = MarcaEntity.builder().id(1L).nome("Toyota").build();
         marcaDto = new MarcaDto(1L, "Toyota");
     }
 
@@ -51,7 +51,7 @@ public class MarcaServiceImplTest {
         PageRequest paginacao = PageRequest.of(0, 10);
         Page<MarcaEntity> page = new PageImpl<>(List.of(marcaEntity));
 
-        when(repository.findAll(paginacao)).thenReturn(page);
+        when(marcaRepository.findAll(paginacao)).thenReturn(page);
 
         Page<MarcaDto> result = service.listarTodas(paginacao);
 
@@ -61,7 +61,7 @@ public class MarcaServiceImplTest {
 
     @Test
     void testBuscarPorId() {
-        when(repository.findById(1L)).thenReturn(Optional.of(marcaEntity));
+        when(marcaRepository.findById(1L)).thenReturn(Optional.of(marcaEntity));
 
         var result = service.buscarPorId(1L);
 
@@ -70,29 +70,31 @@ public class MarcaServiceImplTest {
 
     @Test
     void testBuscarPorIdNotFound() {
-        when(repository.findById(1L)).thenReturn(Optional.empty());
+        when(marcaRepository.findById(1L)).thenReturn(Optional.empty());
 
-        assertThrows(EntityNotFoundException.class, () -> service.buscarPorId(1L));
+        assertThrows(DadoNaoEncontradoException.class, () -> service.buscarPorId(1L));
     }
 
     @Test
     void testCriarMarca() {
-        service.criarMarca(marcaDto);
-
-        verify(repository, times(1)).save(any(MarcaEntity.class));
+        when(marcaRepository.save(any(MarcaEntity.class))).thenReturn(marcaEntity);
+        MarcaDto marca = service.criarMarca(marcaDto);
+        assertNotNull(marca);
+        assertEquals("Toyota", marca.nome());
     }
 
     @Test
     void testExcluir() {
+        when(marcaRepository.findById(1L)).thenReturn(Optional.ofNullable(marcaEntity));
         service.excluir(1L);
-
-        verify(repository, times(1)).deleteById(1L);
+        verify(marcaRepository, times(1)).delete(marcaEntity);
     }
 
     @Test
     void testAtualizarMarca() {
-        service.criarMarca(marcaDto);
-
-        verify(repository, times(1)).save(any(MarcaEntity.class));
+        when(marcaRepository.findById(1L)).thenReturn(Optional.ofNullable(marcaEntity));
+        when(marcaRepository.save(any(MarcaEntity.class))).thenReturn(marcaEntity);
+        service.atualizarMarca(1L, marcaDto);
+        verify(marcaRepository, times(1)).save(any(MarcaEntity.class));
     }
 }
