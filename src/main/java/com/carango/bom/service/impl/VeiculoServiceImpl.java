@@ -40,6 +40,10 @@ public class VeiculoServiceImpl implements VeiculoService {
               }
             });
 
+    if (page.get() == null || page.get().isEmpty()) {
+      throw new DadoNaoEncontradoException(VEICULO_NAO_ENCONTRADO.getTexto());
+    }
+
     return page.get();
   }
 
