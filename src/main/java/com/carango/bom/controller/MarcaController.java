@@ -67,7 +67,7 @@ public class MarcaController implements MarcaSwaggerController {
     @Override
     public ResponseEntity<Object> atualizarMarca(
             @PathVariable(name = "marca_id") Long marcaId,
-            @RequestBody InclusaoMarcaDto inclusaoMarcaDto) {
+            @Valid @RequestBody InclusaoMarcaDto inclusaoMarcaDto) {
         marcaService.atualizarMarca(marcaId, inclusaoMarcaDto.toMarcaDto(inclusaoMarcaDto));
 
         return ResponseEntity.ok()
