@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "81b9bdea-ecd8-468b-9d36-2e4ffa1da71d",
+		"_postman_id": "ff600526-2133-4060-b628-82e367075675",
 		"name": "Alura",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "11174996"
+		"_exporter_id": "5236747"
 	},
 	"item": [
 		{
@@ -25,7 +25,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"nome\": \"Fiat\"\n}",
+									"raw": "{\n    \"nome\": \"Byd\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -58,7 +58,7 @@
 									}
 								],
 								"url": {
-									"raw": "http://localhost:8080/marcas",
+									"raw": "http://localhost:8080/marcas?page=0&size=10&sort=nome,desc",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -66,6 +66,20 @@
 									"port": "8080",
 									"path": [
 										"marcas"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "0"
+										},
+										{
+											"key": "size",
+											"value": "10"
+										},
+										{
+											"key": "sort",
+											"value": "nome,desc"
+										}
 									]
 								}
 							},
@@ -146,7 +160,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"nome\": \"Toyota\"\r\n}",
+									"raw": "{\r\n    \"nome\": \"Audi\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -212,7 +226,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"marcaId\": 1,\r\n    \"modelo\": \"esportivo\",\r\n    \"ano\": 2025,\r\n    \"valor\": \"10000.00\"\r\n}",
+									"raw": "{\r\n    \"marcaId\": 1,\r\n    \"modelo\": \"utilitario-02\",\r\n    \"ano\": 2025,\r\n    \"valor\": \"1000.00\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -245,7 +259,7 @@
 									}
 								],
 								"url": {
-									"raw": "http://localhost:8080/veiculos",
+									"raw": "http://localhost:8080/veiculos?page=0&size=10&sort=marca,desc",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -255,6 +269,14 @@
 										"veiculos"
 									],
 									"query": [
+										{
+											"key": "page",
+											"value": "0"
+										},
+										{
+											"key": "size",
+											"value": "10"
+										},
 										{
 											"key": "marca_id",
 											"value": "1",
@@ -269,6 +291,10 @@
 											"key": "valor_maximo",
 											"value": "20000.00",
 											"disabled": true
+										},
+										{
+											"key": "sort",
+											"value": "marca,desc"
 										}
 									]
 								}

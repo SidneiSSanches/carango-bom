@@ -20,7 +20,7 @@ import java.math.BigDecimal;
 
 @Tag(name = "CRUD de veículos", description = "Gerencia as operações de veículos")
 public interface VeiculoSwaggerController {
-  @Operation(summary = "Lista Veiculos", description = "Funcionalidade de listagem dos veiculos cadastrados",security = { @SecurityRequirement(name = "bearer-key") })
+  @Operation(summary = "Lista Veiculos", description = "Funcionalidade de listagem dos veiculos cadastrados")
   Page<VeiculoDto> listarVeiculos(
           @Valid
           @ParameterObject @PageableDefault(size = 10,page=0,sort="marca,desc") Pageable paginacao,
