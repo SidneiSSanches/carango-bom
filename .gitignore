@@ -31,7 +31,7 @@ replay_pid*
 .metadata/
 
 # Maven
-target/
+*/target/*
 
 # Spring Tool Suite
 .springBeans/
